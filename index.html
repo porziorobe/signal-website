@@ -302,14 +302,27 @@
   <!-- ============================================================
        AWAC Chat Widget Placeholder
   ============================================================ -->
-  <div class="chat-widget">
-    <span class="chat-widget-tooltip">Ask Signal AI</span>
-    <button class="chat-widget-btn" aria-label="Open Signal AI chat">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-    </button>
-  </div>
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'https://ng6f74a3fc0f134709951ed6b63ba3f869.my.site.com/ESWSignalAdaptive1780702605088/assets/js/bootstrap.min.js';
+      script.addEventListener('load', function() {
+        try {
+          embeddedservice_bootstrap.settings.language = 'en_US';
+          embeddedservice_bootstrap.init(
+            '00DdK000008dGgKUAU',
+            'SignalAdaptive',
+            'https://ng6f74a3fc0f134709951ed6b63ba3f869.my.site.com/ESWSignalAdaptive1780702605088',
+            { scrt2URL: 'https://ng6f74a3fc0f134709951ed6b63ba3f869.my.salesforce-scrt.com' }
+          );
+        } catch(err) {
+          console.error('Embedded Service bootstrap error:', err);
+        }
+      });
+      document.body.appendChild(script);
+    })();
+  </script>
 
   <script src="js/main.js"></script>
 </body>
