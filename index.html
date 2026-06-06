@@ -303,26 +303,31 @@
        AWAC Chat Widget Placeholder
   ============================================================ -->
   <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script');
-      script.type = 'module';
-      script.src = 'https://ng6f74a3fc0f134709951ed6b63ba3f869.my.site.com/ESWSignalAdaptive1780702605088/assets/js/bootstrap.min.js';
-      script.addEventListener('load', function() {
-        try {
-          embeddedservice_bootstrap.settings.language = 'en_US';
-          embeddedservice_bootstrap.init(
-            '00DdK000008dGgKUAU',
-            'SignalAdaptive',
-            'https://ng6f74a3fc0f134709951ed6b63ba3f869.my.site.com/ESWSignalAdaptive1780702605088',
-            { scrt2URL: 'https://ng6f74a3fc0f134709951ed6b63ba3f869.my.salesforce-scrt.com' }
-          );
-        } catch(err) {
-          console.error('Embedded Service bootstrap error:', err);
-        }
-      });
-      document.body.appendChild(script);
-    })();
+    window.addEventListener("onEmbeddedMessagingReady", () => {
+      if (embeddedservice_bootstrap.settings &&
+          embeddedservice_bootstrap.settings.embeddedServiceConfig &&
+          embeddedservice_bootstrap.settings.embeddedServiceConfig.fallbackMessage) {
+        embeddedservice_bootstrap.settings.embeddedServiceConfig.fallbackMessage.isFallbackMessageEnabled = false;
+      }
+    });
+
+    function initEmbeddedMessaging() {
+      try {
+        embeddedservice_bootstrap.settings.language = 'en_US';
+        embeddedservice_bootstrap.init(
+          '00DdK000008dGgK',
+          'SignalAdaptive',
+          'https://ng6f74a3fc0f134709951ed6b63ba3f869.my.site.com/ESWSignalAdaptive1780702605088',
+          {
+            scrt2URL: 'https://ng6f74a3fc0f134709951ed6b63ba3f869.my.salesforce-scrt.com'
+          }
+        );
+      } catch (err) {
+        console.error('Error loading Embedded Messaging: ', err);
+      }
+    }
   </script>
+  <script type="text/javascript" src="https://ng6f74a3fc0f134709951ed6b63ba3f869.my.site.com/ESWSignalAdaptive1780702605088/assets/js/bootstrap.min.js" onload="initEmbeddedMessaging()"></script>
 
   <script src="js/main.js"></script>
 </body>
