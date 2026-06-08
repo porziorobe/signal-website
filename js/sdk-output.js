@@ -18744,13 +18744,9 @@ const Recs = ({ items }) => {
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.recsTemplate, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.recsProductsGrid, children: items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.recsProductCard, children: [
-      item.Image_URL__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.Image_URL__c, alt: item.ssot__Name__c ?? "" }) }),
+      item.ImageUrl__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.ImageUrl__c, alt: item.ssot__Name__c ?? "" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.productName, children: item.ssot__Name__c ?? "" }),
-      item.ssot__ProductSKU__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.productSku, children: item.ssot__ProductSKU__c }),
-      item.ssot__MSRPAmount__c && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.productPrice, children: [
-        item.ssot__MSRPAmount__c,
-        item.ssot__MSRPAmountCurrency__c ? ` ${item.ssot__MSRPAmountCurrency__c}` : ""
-      ] }),
+      item.LinkURL__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.productCta, children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: item.LinkURL__c, target: "_blank", rel: "noreferrer", children: "Learn More" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.productCompare, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "input",
@@ -18795,7 +18791,7 @@ const styles$1 = {
 const Comparison = ({ items }) => {
   const displayItems = items.slice(0, 3);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.comparisonTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.comparisonGrid, children: displayItems.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.comparisonColumn, children: [
-    item.Image_URL__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.Image_URL__c, alt: item.ssot__Name__c ?? "" }) }),
+    item.ImageUrl__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.ImageUrl__c, alt: item.ssot__Name__c ?? "" }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.productName, children: item.ssot__Name__c ?? "" }),
     item.ssot__ProductSKU__c && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.featureRow, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureName, children: "SKU" }),
@@ -18844,7 +18840,7 @@ const styles = {
 };
 const ProductDetails = ({ item }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productDetailsTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.productDetailsContainer, children: [
-    item.Image_URL__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageSection, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.Image_URL__c, alt: item.ssot__Name__c ?? "" }) }) }),
+    item.ImageUrl__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageSection, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.ImageUrl__c, alt: item.ssot__Name__c ?? "" }) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.productInfoSection, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: styles.productName, children: item.ssot__Name__c ?? "" }),
       item.ssot__ProductSKU__c && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.itemNumber, children: [
@@ -18869,6 +18865,5 @@ const ProductDetails$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
 
 }
 
-// Export functions to window for global access
 window.addControllerToPage = addControllerToPage;
 window.addAppToPage = addAppToPage;
