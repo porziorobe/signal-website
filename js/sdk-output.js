@@ -1,10 +1,10 @@
 function addControllerToPage() {
   // Contents of build file (controller/adaptive-web-controller.js)
-var AdaptiveWebController = (function(exports) {
-  "use strict";var __defProp = Object.defineProperty;
+var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-
+(function() {
+  "use strict";
   const STORAGE_KEYS = {
     JWT: "JWT",
     ORGANIZATION_ID: "ORGANIZATION_ID",
@@ -149,25 +149,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     // The storage key name under which messaging data is stored in local/session storage.
     WEB_STORAGE_KEY: "ADAPTIVE_WEBSITE"
   };
-  var LogLevel = /* @__PURE__ */ ((LogLevel2) => {
-    LogLevel2[LogLevel2["DEBUG"] = 0] = "DEBUG";
-    LogLevel2[LogLevel2["INFO"] = 1] = "INFO";
-    LogLevel2[LogLevel2["WARN"] = 2] = "WARN";
-    LogLevel2[LogLevel2["ERROR"] = 3] = "ERROR";
-    LogLevel2[LogLevel2["NONE"] = 4] = "NONE";
-    return LogLevel2;
-  })(LogLevel || {});
   let config = {
     level: 0
     /* DEBUG */
     // Default to INFO level
   };
-  function setLogLevel(level) {
-    config.level = level;
-  }
-  function getLogLevel() {
-    return config.level;
-  }
   function shouldLog(level) {
     return level >= config.level && config.level !== 4;
   }
@@ -422,7 +408,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function requireEventsource() {
     if (hasRequiredEventsource) return eventsource$1.exports;
     hasRequiredEventsource = 1;
-    (function(module, exports2) {
+    (function(module, exports) {
       (function(global) {
         var setTimeout = global.setTimeout;
         var clearTimeout = global.clearTimeout;
@@ -1314,13 +1300,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         }
         (function(factory) {
           {
-            var v = factory(exports2);
+            var v = factory(exports);
             if (v !== void 0) module.exports = v;
           }
-        })(function(exports3) {
-          exports3.EventSourcePolyfill = EventSourcePolyfill;
-          exports3.NativeEventSource = NativeEventSource;
-          exports3.EventSource = R;
+        })(function(exports2) {
+          exports2.EventSourcePolyfill = EventSourcePolyfill;
+          exports2.NativeEventSource = NativeEventSource;
+          exports2.EventSource = R;
         });
       })(typeof globalThis === "undefined" ? typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : eventsource : globalThis);
     })(eventsource$1, eventsource$1.exports);
@@ -1815,47 +1801,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       const jsonBlockStart = "```json";
       const jsonBlockEnd = "```";
       let jsonContent = content.trim();
-      const lower = jsonContent.toLowerCase();
-      if (lower.startsWith(jsonBlockStart) && lower.endsWith(jsonBlockEnd)) {
+      if (jsonContent.startsWith(jsonBlockStart) && jsonContent.endsWith(jsonBlockEnd)) {
         jsonContent = jsonContent.slice(jsonBlockStart.length);
         jsonContent = jsonContent.slice(0, -jsonBlockEnd.length);
         jsonContent = jsonContent.trim();
       }
       return JSON.parse(jsonContent);
     } catch {
-      if (content.toLowerCase().includes("```json")) {
+      if (content.startsWith("```json")) {
         logger.debug(`Response message did not have valid JSON: ${content}`);
       }
-    }
-  }
-  async function fetchPersonalizationData(personalizationPoint, context) {
-    if (!window.SalesforceInteractions?.Personalization) {
-      logger.warn("SalesforceInteractions.Personalization is not available on window. Cannot fetch personalization data.");
-      return void 0;
-    }
-    const response = await window.SalesforceInteractions.Personalization.fetch([personalizationPoint], context);
-    if (!response?.personalizations?.length) {
-      logger.warn(`No personalizations returned for point: ${personalizationPoint}`);
-      return void 0;
-    }
-    return response.personalizations.find((p) => p.personalizationPointName === personalizationPoint);
-  }
-  async function enrichContentWithPersonalizationData(content) {
-    const personalizationPoint = content.personalizationPoint;
-    if (!personalizationPoint) {
-      return content;
-    }
-    try {
-      const context = content.dynamicContextAttributes;
-      const personalization = await fetchPersonalizationData(personalizationPoint, context);
-      if (!personalization || !personalization.data?.length) {
-        logger.warn(`No content objects found for personalization point: ${personalizationPoint}`);
-        return content;
-      }
-      return { ...content, personalizations: [personalization] };
-    } catch (error) {
-      logger.error("Failed to enrich content with personalization data:", error);
-      return content;
     }
   }
   const ConversationEventTypes = {
@@ -2115,25 +2070,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             const content = parseJsonInAgentResponse(conversationEntry.entryPayload.abstractMessage.staticContent.text);
             if (content !== void 0 && content !== null) {
               logger.debug(`Static content message text: `, content);
-              if (content.personalizationPoint) {
-                this.enrichAndDispatchContent(content);
-              } else {
-                this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGING_CONTENT_RECEIVED, { content });
-              }
+              this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGING_CONTENT_RECEIVED, { content });
             }
           }
           this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGE_SENT, parsedEventData);
         } catch (err) {
           logger.error(`Something went wrong in handling conversation message server sent event: ${err}`);
-        }
-      });
-      __publicField(this, "enrichAndDispatchContent", async (content) => {
-        try {
-          const enrichedContent = await enrichContentWithPersonalizationData(content);
-          this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGING_CONTENT_RECEIVED, { content: enrichedContent });
-        } catch (error) {
-          logger.error("Failed to enrich content with personalization data, dispatching original:", error);
-          this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGING_CONTENT_RECEIVED, { content });
         }
       });
       /**
@@ -2398,18 +2340,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         parseEntryPayload,
         parseJsonInAgentResponse,
         getTextMessageContent
-      },
-      logging: {
-        LogLevel,
-        setControllerLogLevel: (level) => setLogLevel(level),
-        getControllerLogLevel: () => getLogLevel()
       }
     };
   }
-  exports.LogLevel = LogLevel;
-  Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-  return exports;
-})({});
+})();
 
 }
 
@@ -2957,7 +2891,218 @@ function addAppToPage() {
 
 ._compareButton_153zu_28:active {
   background-color: #055a7a;
-}._comparisonTemplate_1nvy2_1 {
+}._productLink_1oysg_1 {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+._productCard_1oysg_7 {
+  position: relative;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0;
+  transition: box-shadow 0.2s ease;
+}
+
+._productCard_1oysg_7:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+._productFavorite_1oysg_22 {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+._productFavorite_1oysg_22:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+._productFavorite_1oysg_22 svg {
+  width: 18px;
+  height: 18px;
+  stroke: #097fb3;
+  fill: none;
+  stroke-width: 1.5;
+}
+
+._productFavorite_1oysg_22:hover svg {
+  fill: #076a94;
+  stroke: #076a94;
+}
+
+._productImageContainer_1oysg_54 {
+  width: 100%;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  overflow: hidden;
+  position: relative;
+}
+
+._productImageContainer_1oysg_54 img {
+  width: auto;
+  height: 100%;
+  padding: 8px;
+}
+
+._productName_1oysg_71 {
+  font-size: 13px;
+  font-weight: 400;
+  color: #333;
+  line-height: 1.4;
+  padding: 0 12px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+._productPrice_1oysg_83 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+._productCompare_1oysg_91 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0px;
+}
+
+._productCompare_1oysg_91 input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  accent-color: #333;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+._productCompare_1oysg_91 input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+._productCompare_1oysg_91 label {
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 400;
+  line-height: 1;
+}
+
+._productRating_12zy1_1 {
+  display: flex;
+  gap: 1px;
+  line-height: 1;
+  align-items: center;
+}
+
+._small_12zy1_8 {
+  font-size: 14px;
+  height: 16px;
+}
+
+._large_12zy1_13 {
+  font-size: 16px;
+  height: 20px;
+}
+
+._star_12zy1_18 {
+  display: inline-block;
+  color: #097fb3;
+  line-height: 1;
+}
+
+._small_12zy1_8 ._star_12zy1_18 {
+  font-size: 14px;
+}
+
+._large_12zy1_13 ._star_12zy1_18 {
+  font-size: 16px;
+}
+
+._starFull_12zy1_32 {
+  color: #097fb3;
+}
+
+._starHalf_12zy1_36 {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+._small_12zy1_8 ._starHalf_12zy1_36 {
+  width: 14px;
+  height: 14px;
+}
+
+._large_12zy1_13 ._starHalf_12zy1_36 {
+  width: 16px;
+  height: 16px;
+}
+
+._starHalfFilled_12zy1_52 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  color: #097fb3;
+  line-height: 1;
+}
+
+._small_12zy1_8 ._starHalfFilled_12zy1_52 {
+  font-size: 14px;
+}
+
+._large_12zy1_13 ._starHalfFilled_12zy1_52 {
+  font-size: 16px;
+}
+
+._starHalfEmpty_12zy1_70 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: #e0e0e0;
+  line-height: 1;
+  z-index: -1;
+}
+
+._small_12zy1_8 ._starHalfEmpty_12zy1_70 {
+  font-size: 14px;
+}
+
+._large_12zy1_13 ._starHalfEmpty_12zy1_70 {
+  font-size: 16px;
+}
+
+._starEmpty_12zy1_88 {
+  color: #e0e0e0;
+}
+
+._comparisonTemplate_1nvy2_1 {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -15718,7 +15863,7 @@ const messageChoices = "_messageChoices_ixb5p_155";
 const choiceButton = "_choiceButton_ixb5p_166";
 const selected = "_selected_ixb5p_192";
 const typingIndicator$1 = "_typingIndicator_ixb5p_204";
-const styles$6 = {
+const styles$8 = {
   chatbotContainer,
   messagesContainer,
   message,
@@ -15859,18 +16004,18 @@ const ChatBot = ({ show }) => {
     const date = new Date(timestamp);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: show && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.chatbotContainer, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.messagesContainer, ref: messagesContainerRef, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: show && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.chatbotContainer, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.messagesContainer, ref: messagesContainerRef, children: [
       conversationEntries.filter(window.AdaptiveWebsite.util.isTextMessage).map((entry) => {
         const messagePayload = getMessagePayloadFromConversationEntry(entry);
         if (messagePayload) {
           const isMessageFromEndUser = window.AdaptiveWebsite.util.isMessageFromEndUser(entry);
-          return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `${styles$6.message} ${isMessageFromEndUser ? styles$6.messageUser : styles$6.messageBot}`, children: [
-            !isMessageFromEndUser && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.agentLogo, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: AGENT_LOGO_IMAGE_URL, alt: "Agent Logo" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.messageWrapper, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.messageContent, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.messageText, children: messagePayload == null ? void 0 : messagePayload.text }) }),
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `${styles$8.message} ${isMessageFromEndUser ? styles$8.messageUser : styles$8.messageBot}`, children: [
+            !isMessageFromEndUser && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.agentLogo, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: AGENT_LOGO_IMAGE_URL, alt: "Agent Logo" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.messageWrapper, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.messageContent, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.messageText, children: messagePayload == null ? void 0 : messagePayload.text }) }),
               (messagePayload == null ? void 0 : messagePayload.options) && /* @__PURE__ */ jsxRuntimeExports.jsx(MessageOptions, { options: messagePayload.options }),
-              entry.transcriptedTimestamp && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.messageTimestamp, children: [
+              entry.transcriptedTimestamp && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.messageTimestamp, children: [
                 !isMessageFromEndUser ? `${AGENT_NAME} • ` : "Sent • ",
                 formatTimestamp(entry.transcriptedTimestamp)
               ] })
@@ -15878,23 +16023,23 @@ const ChatBot = ({ show }) => {
           ] }, entry.identifier);
         }
       }),
-      isAnotherParticipantTyping && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `${styles$6.message} ${styles$6.messageBot}`, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.agentLogo, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: AGENT_LOGO_IMAGE_URL, alt: "Agent Logo" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.messageWrapper, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.messageContent, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.typingIndicator, children: [
+      isAnotherParticipantTyping && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `${styles$8.message} ${styles$8.messageBot}`, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.agentLogo, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: AGENT_LOGO_IMAGE_URL, alt: "Agent Logo" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.messageWrapper, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.messageContent, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$8.typingIndicator, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", {})
         ] }) }) })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSendMessage, className: styles$6.messageInputForm, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.messageInputContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.inputRow, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.textareaContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+    /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSendMessage, className: styles$8.messageInputForm, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.messageInputContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.inputRow, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$8.textareaContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
       "textarea",
       {
         value: inputText,
         onChange: (e) => setInputText(e.target.value),
         onKeyDown: handleKeyPress,
         placeholder: "Ask me anything...",
-        className: styles$6.messageInput,
+        className: styles$8.messageInput,
         rows: 1
       }
     ) }) }) }) })
@@ -15905,19 +16050,19 @@ const MessageOptions = ({ options }) => {
   const handleChoiceSelection = (event, option) => {
     var _a;
     window.AdaptiveWebsite.sendTextMessage(option.name);
-    event.currentTarget.classList.add(styles$6.selected);
+    event.currentTarget.classList.add(styles$8.selected);
     (_a = messageChoicesRef.current) == null ? void 0 : _a.querySelectorAll("button").forEach((button) => {
       if (button !== event.currentTarget) {
-        button.classList.remove(styles$6.selected);
+        button.classList.remove(styles$8.selected);
       }
     });
   };
   if (Array.isArray(options) && options.length > 0) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref: messageChoicesRef, className: styles$6.messageChoices, children: options.map((option) => {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref: messageChoicesRef, className: styles$8.messageChoices, children: options.map((option) => {
       return /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
-          className: styles$6.choiceButton,
+          className: styles$8.choiceButton,
           onClick: (e) => handleChoiceSelection(e, option),
           children: option.name
         },
@@ -16004,7 +16149,7 @@ const contentZoneContainer = "_contentZoneContainer_1hs9j_1";
 const contentZoneContent = "_contentZoneContent_1hs9j_25";
 const blankContent = "_blankContent_1hs9j_34";
 const typingIndicator = "_typingIndicator_1hs9j_44";
-const styles$5 = {
+const styles$7 = {
   contentZoneContainer,
   contentZoneContent,
   blankContent,
@@ -16015,10 +16160,10 @@ var hasRequiredAdaptiveWebController;
 function requireAdaptiveWebController() {
   if (hasRequiredAdaptiveWebController) return adaptiveWebController;
   hasRequiredAdaptiveWebController = 1;
-  (function(exports) {
-    var __defProp = Object.defineProperty;
-    var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-    var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  var __defProp = Object.defineProperty;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  (function() {
     const STORAGE_KEYS = {
       JWT: "JWT",
       ORGANIZATION_ID: "ORGANIZATION_ID",
@@ -16163,25 +16308,11 @@ function requireAdaptiveWebController() {
       // The storage key name under which messaging data is stored in local/session storage.
       WEB_STORAGE_KEY: "ADAPTIVE_WEBSITE"
     };
-    var LogLevel = /* @__PURE__ */ ((LogLevel2) => {
-      LogLevel2[LogLevel2["DEBUG"] = 0] = "DEBUG";
-      LogLevel2[LogLevel2["INFO"] = 1] = "INFO";
-      LogLevel2[LogLevel2["WARN"] = 2] = "WARN";
-      LogLevel2[LogLevel2["ERROR"] = 3] = "ERROR";
-      LogLevel2[LogLevel2["NONE"] = 4] = "NONE";
-      return LogLevel2;
-    })(LogLevel || {});
     let config2 = {
       level: 0
       /* DEBUG */
       // Default to INFO level
     };
-    function setLogLevel(level) {
-      config2.level = level;
-    }
-    function getLogLevel() {
-      return config2.level;
-    }
     function shouldLog2(level) {
       return level >= config2.level && config2.level !== 4;
     }
@@ -16436,7 +16567,7 @@ function requireAdaptiveWebController() {
     function requireEventsource() {
       if (hasRequiredEventsource) return eventsource$1.exports;
       hasRequiredEventsource = 1;
-      (function(module, exports2) {
+      (function(module, exports) {
         (function(global) {
           var setTimeout2 = global.setTimeout;
           var clearTimeout2 = global.clearTimeout;
@@ -17328,13 +17459,13 @@ function requireAdaptiveWebController() {
           }
           (function(factory) {
             {
-              var v = factory(exports2);
+              var v = factory(exports);
               if (v !== void 0) module.exports = v;
             }
-          })(function(exports3) {
-            exports3.EventSourcePolyfill = EventSourcePolyfill;
-            exports3.NativeEventSource = NativeEventSource;
-            exports3.EventSource = R;
+          })(function(exports2) {
+            exports2.EventSourcePolyfill = EventSourcePolyfill;
+            exports2.NativeEventSource = NativeEventSource;
+            exports2.EventSource = R;
           });
         })(typeof globalThis === "undefined" ? typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : eventsource : globalThis);
       })(eventsource$1, eventsource$1.exports);
@@ -17832,49 +17963,16 @@ function requireAdaptiveWebController() {
         const jsonBlockStart = "```json";
         const jsonBlockEnd = "```";
         let jsonContent = content.trim();
-        const lower = jsonContent.toLowerCase();
-        if (lower.startsWith(jsonBlockStart) && lower.endsWith(jsonBlockEnd)) {
+        if (jsonContent.startsWith(jsonBlockStart) && jsonContent.endsWith(jsonBlockEnd)) {
           jsonContent = jsonContent.slice(jsonBlockStart.length);
           jsonContent = jsonContent.slice(0, -jsonBlockEnd.length);
           jsonContent = jsonContent.trim();
         }
         return JSON.parse(jsonContent);
       } catch {
-        if (content.toLowerCase().includes("```json")) {
+        if (content.startsWith("```json")) {
           logger2.debug(`Response message did not have valid JSON: ${content}`);
         }
-      }
-    }
-    async function fetchPersonalizationData(personalizationPoint, context) {
-      var _a, _b;
-      if (!((_a = window.SalesforceInteractions) == null ? void 0 : _a.Personalization)) {
-        logger2.warn("SalesforceInteractions.Personalization is not available on window. Cannot fetch personalization data.");
-        return void 0;
-      }
-      const response = await window.SalesforceInteractions.Personalization.fetch([personalizationPoint], context);
-      if (!((_b = response == null ? void 0 : response.personalizations) == null ? void 0 : _b.length)) {
-        logger2.warn(`No personalizations returned for point: ${personalizationPoint}`);
-        return void 0;
-      }
-      return response.personalizations.find((p) => p.personalizationPointName === personalizationPoint);
-    }
-    async function enrichContentWithPersonalizationData(content) {
-      var _a;
-      const personalizationPoint = content.personalizationPoint;
-      if (!personalizationPoint) {
-        return content;
-      }
-      try {
-        const context = content.dynamicContextAttributes;
-        const personalization = await fetchPersonalizationData(personalizationPoint, context);
-        if (!personalization || !((_a = personalization.data) == null ? void 0 : _a.length)) {
-          logger2.warn(`No content objects found for personalization point: ${personalizationPoint}`);
-          return content;
-        }
-        return { ...content, personalizations: [personalization] };
-      } catch (error) {
-        logger2.error("Failed to enrich content with personalization data:", error);
-        return content;
       }
     }
     const ConversationEventTypes = {
@@ -18091,25 +18189,12 @@ function requireAdaptiveWebController() {
               const content = parseJsonInAgentResponse(conversationEntry.entryPayload.abstractMessage.staticContent.text);
               if (content !== void 0 && content !== null) {
                 logger2.debug(`Static content message text: `, content);
-                if (content.personalizationPoint) {
-                  this.enrichAndDispatchContent(content);
-                } else {
-                  this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGING_CONTENT_RECEIVED, { content });
-                }
+                this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGING_CONTENT_RECEIVED, { content });
               }
             }
             this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGE_SENT, parsedEventData);
           } catch (err) {
             logger2.error(`Something went wrong in handling conversation message server sent event: ${err}`);
-          }
-        });
-        __publicField(this, "enrichAndDispatchContent", async (content) => {
-          try {
-            const enrichedContent = await enrichContentWithPersonalizationData(content);
-            this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGING_CONTENT_RECEIVED, { content: enrichedContent });
-          } catch (error) {
-            logger2.error("Failed to enrich content with personalization data, dispatching original:", error);
-            this.dispatchEvent(ConversationEventTypes.ON_EMBEDDED_MESSAGING_CONTENT_RECEIVED, { content });
           }
         });
         __publicField(this, "handleRoutingResultServerSentEvent", (event) => {
@@ -18329,18 +18414,10 @@ function requireAdaptiveWebController() {
           parseEntryPayload,
           parseJsonInAgentResponse,
           getTextMessageContent
-        },
-        logging: {
-          LogLevel,
-          setControllerLogLevel: (level) => setLogLevel(level),
-          getControllerLogLevel: () => getLogLevel()
         }
       };
     }
-    exports.LogLevel = LogLevel;
-    Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-    return exports;
-  })({});
+  })();
   return adaptiveWebController;
 }
 requireAdaptiveWebController();
@@ -18373,24 +18450,24 @@ const ContentZone = ({ show }) => {
       }
     }
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: show && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.contentZoneContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.contentZoneContent, children: /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.Suspense, { fallback: /* @__PURE__ */ jsxRuntimeExports.jsx(Placeholder, {}), children: contentZoneContent2 ? (() => {
-    const templateName = contentZoneContent2.template;
-    const personalizations = contentZoneContent2.personalizations ?? [];
-    const items = personalizations.flatMap((p) => p.data);
-    if (templateName === "Recs") {
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(Recs$2, { items });
-    }
-    if (templateName === "Comparison") {
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(Comparison$2, { items });
-    }
-    if (templateName === "ProductDetails") {
-      return items[0] != null ? /* @__PURE__ */ jsxRuntimeExports.jsx(ProductDetails$2, { item: items[0] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Placeholder, {});
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: show && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.contentZoneContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.contentZoneContent, children: contentZoneContent2 ? (() => {
+    const template = contentZoneContent2.template;
+    if (template && Array.isArray(template) && template.length > 0) {
+      const firstTemplate = template[0];
+      const templateName = typeof firstTemplate === "object" && firstTemplate !== null && "name" in firstTemplate ? firstTemplate.name : null;
+      if (templateName === "Recs") {
+        return /* @__PURE__ */ jsxRuntimeExports.jsx(Recs$2, { content: contentZoneContent2 });
+      } else if (templateName === "Comparison") {
+        return /* @__PURE__ */ jsxRuntimeExports.jsx(Comparison$2, { content: contentZoneContent2 });
+      } else if (templateName === "ProductDetails") {
+        return /* @__PURE__ */ jsxRuntimeExports.jsx(ProductDetails$2, { content: contentZoneContent2 });
+      }
     }
     return /* @__PURE__ */ jsxRuntimeExports.jsx(Placeholder, {});
-  })() : /* @__PURE__ */ jsxRuntimeExports.jsx(Placeholder, {}) }) }) }) });
+  })() : /* @__PURE__ */ jsxRuntimeExports.jsx(Placeholder, {}) }) }) });
 };
 const Placeholder = () => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.blankContent, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.typingIndicator, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$7.blankContent, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$7.typingIndicator, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", {}),
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", {}),
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", {})
@@ -18400,7 +18477,7 @@ const headerContainer = "_headerContainer_1983q_1";
 const agentName = "_agentName_1983q_11";
 const endConversationButton = "_endConversationButton_1983q_19";
 const minimizeButton = "_minimizeButton_1983q_38";
-const styles$4 = {
+const styles$6 = {
   headerContainer,
   agentName,
   endConversationButton,
@@ -18411,13 +18488,13 @@ const Header = ({ show }) => {
   if (!show) {
     return null;
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$4.headerContainer, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.agentName, children: /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: AGENT_NAME }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: styles$4.endConversationButton, onClick: window.AdaptiveWebsite.endConversation, children: "End Conversation" }),
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.headerContainer, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.agentName, children: /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: AGENT_NAME }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: styles$6.endConversationButton, onClick: window.AdaptiveWebsite.endConversation, children: "End Conversation" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       "button",
       {
-        className: styles$4.minimizeButton,
+        className: styles$6.minimizeButton,
         onClick: window.AdaptiveWebsite.minimize,
         "aria-label": "Minimize content zone",
         children: /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -18452,7 +18529,7 @@ const searchActions = "_searchActions_lpcxl_50";
 const searchActionButton = "_searchActionButton_lpcxl_57";
 const searchIcon = "_searchIcon_lpcxl_73";
 const expandButton = "_expandButton_lpcxl_90";
-const styles$3 = {
+const styles$5 = {
   searchContainer,
   searchForm,
   searchBar,
@@ -18484,9 +18561,9 @@ const SearchBar = ({ show, onInitialMessage }) => {
     }
     window.AdaptiveWebsite.maximize();
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: show && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.searchContainer, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSearch, className: styles$3.searchForm, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.searchBar, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.searchIcon, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: AGENT_LOGO_IMAGE_URL, alt: "Search" }) }),
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: show && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.searchContainer, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSearch, className: styles$5.searchForm, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.searchBar, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.searchIcon, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: AGENT_LOGO_IMAGE_URL, alt: "Search" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "input",
         {
@@ -18495,15 +18572,15 @@ const SearchBar = ({ show, onInitialMessage }) => {
           value: searchText,
           onChange: (e) => setSearchText(e.target.value),
           placeholder: "Welcome! How can I help you today?",
-          className: styles$3.searchInput
+          className: styles$5.searchInput
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.searchActions, children: searchActions2.map((action, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.searchActions, children: searchActions2.map((action, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
           type: "submit",
           name: "buttonText",
-          className: styles$3.searchActionButton,
+          className: styles$5.searchActionButton,
           value: action.value,
           children: action.text
         },
@@ -18518,7 +18595,7 @@ const SearchBar = ({ show, onInitialMessage }) => {
         height: "18",
         viewBox: "0 0 18 18",
         fill: "none",
-        className: styles$3.expandButton,
+        className: styles$5.expandButton,
         onClick: window.AdaptiveWebsite.maximize,
         children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "path",
@@ -18717,55 +18794,140 @@ if (!appendToBody()) {
   });
 }
 const recsTemplate = "_recsTemplate_153zu_1";
+const recsBanner = "_recsBanner_153zu_9";
 const recsProductsGrid = "_recsProductsGrid_153zu_21";
 const compareButtonContainer = "_compareButtonContainer_153zu_28";
 const compareButton = "_compareButton_153zu_28";
-const styles$2 = {
+const styles$4 = {
   recsTemplate,
+  recsBanner,
   recsProductsGrid,
   compareButtonContainer,
   compareButton
 };
-const MAX_COMPARE_ITEMS = 3;
-const Recs = ({ items }) => {
-  const [compareSelected, setCompareSelected] = reactExports.useState([]);
+const productLink = "_productLink_1oysg_1";
+const productCard = "_productCard_1oysg_7";
+const productFavorite = "_productFavorite_1oysg_22";
+const productImageContainer$1 = "_productImageContainer_1oysg_54";
+const productName$1 = "_productName_1oysg_71";
+const productPrice$1 = "_productPrice_1oysg_83";
+const productCompare = "_productCompare_1oysg_91";
+const styles$3 = {
+  productLink,
+  productCard,
+  productFavorite,
+  productImageContainer: productImageContainer$1,
+  productName: productName$1,
+  productPrice: productPrice$1,
+  productCompare
+};
+const productRating = "_productRating_12zy1_1";
+const small = "_small_12zy1_8";
+const large = "_large_12zy1_13";
+const star = "_star_12zy1_18";
+const starFull = "_starFull_12zy1_32";
+const starHalf = "_starHalf_12zy1_36";
+const starHalfFilled = "_starHalfFilled_12zy1_52";
+const starHalfEmpty = "_starHalfEmpty_12zy1_70";
+const starEmpty = "_starEmpty_12zy1_88";
+const styles$2 = {
+  productRating,
+  small,
+  large,
+  star,
+  starFull,
+  starHalf,
+  starHalfFilled,
+  starHalfEmpty,
+  starEmpty
+};
+const ProductStars = ({ rating, size = "small" }) => {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  const sizeClass = size === "large" ? styles$2.large : styles$2.small;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `${styles$2.productRating} ${sizeClass}`, children: [
+    [...Array(fullStars)].map((_, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `${styles$2.star} ${styles$2.starFull}`, children: "★" }, `full-${i}`)),
+    hasHalfStar && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `${styles$2.star} ${styles$2.starHalf}`, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles$2.starHalfFilled, children: "★" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles$2.starHalfEmpty, children: "★" })
+    ] }),
+    [...Array(emptyStars)].map((_, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `${styles$2.star} ${styles$2.starEmpty}`, children: "★" }, `empty-${i}`))
+  ] });
+};
+const ProductCard = ({
+  product,
+  onCompareChange,
+  showCompare,
+  compareDisabled
+}) => {
+  const handleFavoriteClick = (e) => {
+    logger.debug("Favorite clicked for product:", product.id);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "a",
+    {
+      href: "#",
+      className: styles$3.productLink,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.productCard, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productFavorite, onClick: handleFavoriteClick, children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: product.image, alt: product.name }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productName, children: product.name }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productPrice, children: product.price }),
+        product.rating && /* @__PURE__ */ jsxRuntimeExports.jsx(ProductStars, { rating: product.rating, size: "small" }),
+        showCompare && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.productCompare, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "checkbox",
+              id: `compare-${product.id}`,
+              onChange: () => onCompareChange && onCompareChange(product.id),
+              disabled: compareDisabled
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: `compare-${product.id}`, children: "Compare" })
+        ] })
+      ] })
+    }
+  );
+};
+const Recs = ({ content }) => {
+  const recsData = (content == null ? void 0 : content.curation) || {};
+  const products = (recsData == null ? void 0 : recsData.products) || [];
+  const bannerImage = recsData == null ? void 0 : recsData.bannerImage;
+  const MAX_COMPARE_PRODUCTS = 3;
+  const [compareCheckboxesSelected, setCompareCheckboxesSelected] = reactExports.useState([]);
   const handleCompareChange = (id) => {
-    if (compareSelected.includes(id)) {
-      setCompareSelected(compareSelected.filter((refId) => refId !== id));
+    if (compareCheckboxesSelected.includes(id)) {
+      setCompareCheckboxesSelected(compareCheckboxesSelected.filter((refId) => refId !== id));
     } else {
-      setCompareSelected([...compareSelected, id]);
+      setCompareCheckboxesSelected([...compareCheckboxesSelected, id]);
     }
   };
-  const handleCompareItems = () => {
-    logger.debug("Comparing items:", compareSelected);
+  const handleCompareProducts = () => {
+    logger.debug("Comparing products:", compareCheckboxesSelected);
   };
   const shouldDisableCompareCheckbox = (id) => {
-    return compareSelected.length >= MAX_COMPARE_ITEMS && !compareSelected.includes(id);
+    return compareCheckboxesSelected.length >= MAX_COMPARE_PRODUCTS && !compareCheckboxesSelected.includes(id);
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.recsTemplate, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.recsProductsGrid, children: items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.recsProductCard, children: [
-      item.ImageUrl__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.ImageUrl__c, alt: item.ssot__Name__c ?? "" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.productName, children: item.ssot__Name__c ?? "" }),
-      item.LinkURL__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.productCta, children: /* @__PURE__ */ jsxRuntimeExports.jsx("a", { href: item.LinkURL__c, target: "_blank", rel: "noreferrer", children: "Learn More" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.productCompare, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "input",
-          {
-            type: "checkbox",
-            id: `compare-${item.personalizationContentId}`,
-            onChange: () => handleCompareChange(item.personalizationContentId),
-            disabled: shouldDisableCompareCheckbox(item.personalizationContentId)
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: `compare-${item.personalizationContentId}`, children: "Compare" })
-      ] })
-    ] }, item.personalizationContentId)) }),
-    compareSelected.length >= MAX_COMPARE_ITEMS && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.compareButtonContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$4.recsTemplate, children: [
+    bannerImage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.recsBanner, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: bannerImage, alt: "Banner" }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.recsProductsGrid, children: products.map((product) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ProductCard,
+      {
+        product,
+        showCompare: true,
+        compareDisabled: shouldDisableCompareCheckbox(product.id),
+        onCompareChange: handleCompareChange
+      },
+      product.id
+    )) }),
+    compareCheckboxesSelected.length >= MAX_COMPARE_PRODUCTS && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.compareButtonContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
       "button",
       {
-        className: styles$2.compareButton,
-        onClick: handleCompareItems,
-        children: "Compare Items"
+        className: styles$4.compareButton,
+        onClick: handleCompareProducts,
+        children: "Compare Products"
       }
     ) })
   ] });
@@ -18777,6 +18939,7 @@ const Recs$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
 const comparisonTemplate = "_comparisonTemplate_1nvy2_1";
 const comparisonGrid = "_comparisonGrid_1nvy2_8";
 const comparisonColumn = "_comparisonColumn_1nvy2_15";
+const featuresSection$1 = "_featuresSection_1nvy2_21";
 const featureRow = "_featureRow_1nvy2_28";
 const featureName$1 = "_featureName_1nvy2_37";
 const featureValue$1 = "_featureValue_1nvy2_46";
@@ -18784,31 +18947,38 @@ const styles$1 = {
   comparisonTemplate,
   comparisonGrid,
   comparisonColumn,
+  featuresSection: featuresSection$1,
   featureRow,
   featureName: featureName$1,
   featureValue: featureValue$1
 };
-const Comparison = ({ items }) => {
-  const displayItems = items.slice(0, 3);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.comparisonTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.comparisonGrid, children: displayItems.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.comparisonColumn, children: [
-    item.ImageUrl__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.ImageUrl__c, alt: item.ssot__Name__c ?? "" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.productName, children: item.ssot__Name__c ?? "" }),
-    item.ssot__ProductSKU__c && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.featureRow, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureName, children: "SKU" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureValue, children: item.ssot__ProductSKU__c })
-    ] }),
-    item.ssot__BrandId__c && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.featureRow, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureName, children: "Brand" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureValue, children: item.ssot__BrandId__c })
-    ] }),
-    item.ssot__MSRPAmount__c && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.featureRow, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureName, children: "Price" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.featureValue, children: [
-        item.ssot__MSRPAmount__c,
-        item.ssot__MSRPAmountCurrency__c ? ` ${item.ssot__MSRPAmountCurrency__c}` : ""
-      ] })
-    ] })
-  ] }, item.personalizationContentId)) }) });
+const Comparison = ({ content }) => {
+  const comparisonData = (content == null ? void 0 : content.curation) || {};
+  const products = (comparisonData == null ? void 0 : comparisonData.products) || [];
+  const displayProducts = products.slice(0, 3);
+  const getAllFeatures = () => {
+    const featureSet = /* @__PURE__ */ new Set();
+    displayProducts.forEach((product) => {
+      var _a;
+      (_a = product.features) == null ? void 0 : _a.forEach((feature) => {
+        featureSet.add(feature.name);
+      });
+    });
+    return Array.from(featureSet).slice(0, 5);
+  };
+  const allFeatures = getAllFeatures();
+  const getFeatureValue = (product, featureName2) => {
+    var _a;
+    const feature = (_a = product.features) == null ? void 0 : _a.find((f) => f.name === featureName2);
+    return (feature == null ? void 0 : feature.value) || "—";
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.comparisonTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.comparisonGrid, children: displayProducts.map((product) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.comparisonColumn, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ProductCard, { product }),
+    allFeatures.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featuresSection, children: allFeatures.map((featureName2, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.featureRow, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureName, children: featureName2 }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureValue, children: getFeatureValue(product, featureName2) })
+    ] }, index)) })
+  ] }, product.id)) }) });
 };
 const Comparison$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -18822,7 +18992,13 @@ const productInfoSection = "_productInfoSection_19kxk_38";
 const itemNumber = "_itemNumber_19kxk_44";
 const productName = "_productName_19kxk_51";
 const productPrice = "_productPrice_19kxk_59";
+const actionButtons = "_actionButtons_19kxk_66";
+const addToCartButton = "_addToCartButton_19kxk_73";
+const favoriteButton = "_favoriteButton_19kxk_103";
 const featuresSection = "_featuresSection_19kxk_134";
+const featuresTitle = "_featuresTitle_19kxk_140";
+const featuresList = "_featuresList_19kxk_149";
+const featureItem = "_featureItem_19kxk_158";
 const featureName = "_featureName_19kxk_165";
 const featureValue = "_featureValue_19kxk_170";
 const styles = {
@@ -18834,26 +19010,72 @@ const styles = {
   itemNumber,
   productName,
   productPrice,
+  actionButtons,
+  addToCartButton,
+  favoriteButton,
   featuresSection,
+  featuresTitle,
+  featuresList,
+  featureItem,
   featureName,
   featureValue
 };
-const ProductDetails = ({ item }) => {
+const ProductDetails = ({ content }) => {
+  const detailsData = (content == null ? void 0 : content.curation) || {};
+  const product = detailsData == null ? void 0 : detailsData.product;
+  if (!product) {
+    return null;
+  }
+  const handleAddToCart = () => {
+    logger.debug("Add to cart clicked for product:", product.id);
+  };
+  const handleFavoriteClick = () => {
+    logger.debug("Favorite clicked for product:", product.id);
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productDetailsTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.productDetailsContainer, children: [
-    item.ImageUrl__c && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageSection, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: item.ImageUrl__c, alt: item.ssot__Name__c ?? "" }) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageSection, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: product.image, alt: product.name }) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.productInfoSection, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: styles.productName, children: item.ssot__Name__c ?? "" }),
-      item.ssot__ProductSKU__c && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.itemNumber, children: [
-        "SKU: ",
-        item.ssot__ProductSKU__c
+      product.itemNumber && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.itemNumber, children: [
+        "ITEM NO.: ",
+        product.itemNumber
       ] }),
-      item.ssot__MSRPAmount__c && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.productPrice, children: [
-        item.ssot__MSRPAmount__c,
-        item.ssot__MSRPAmountCurrency__c ? ` ${item.ssot__MSRPAmountCurrency__c}` : ""
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: styles.productName, children: product.name }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productPrice, children: product.price }),
+      product.rating && /* @__PURE__ */ jsxRuntimeExports.jsx(ProductStars, { rating: product.rating, size: "large" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.actionButtons, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            className: styles.addToCartButton,
+            onClick: handleAddToCart,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: "3", y1: "6", x2: "21", y2: "6" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M16 10a4 4 0 0 1-8 0" })
+              ] }),
+              "ADD TO CART"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            className: styles.favoriteButton,
+            onClick: handleFavoriteClick,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" }) })
+          }
+        )
       ] }),
-      item.ssot__BrandId__c && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.featuresSection, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles.featureName, children: "Brand:" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles.featureValue, children: item.ssot__BrandId__c })
+      product.features && product.features.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.featuresSection, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: styles.featuresTitle, children: "FEATURES" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: styles.featuresList, children: product.features.map((feature, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: styles.featureItem, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: styles.featureName, children: [
+            feature.name,
+            ":"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles.featureValue, children: feature.value })
+        ] }, index)) })
       ] })
     ] })
   ] }) });
@@ -18865,5 +19087,6 @@ const ProductDetails$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
 
 }
 
+// Export functions to window for global access
 window.addControllerToPage = addControllerToPage;
 window.addAppToPage = addAppToPage;
