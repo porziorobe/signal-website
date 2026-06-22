@@ -2356,22 +2356,34 @@ function addAppToPage() {
       var elementStyle = document.createElement("style");
       elementStyle.appendChild(document.createTextNode(`.app {
   position: fixed !important;
+  z-index: 2147483647 !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Collapsed: just the search bar pinned to bottom */
+.app-collapsed {
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+}
+
+/* Expanded: centered modal */
+.app-expanded {
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
   width: 82vw !important;
   height: 85vh !important;
-  z-index: 2147483647 !important;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-  display: flex;
-  flex-direction: column;
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.12);
   overflow: hidden;
 }
 
-.app::before {
+.app-expanded::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -2389,37 +2401,27 @@ function addAppToPage() {
   position: relative;
   overflow: hidden;
 }
-._chatbotContainer_jd8mj_1 {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  bottom: 80px;
-  width: 340px;
+._chatbotContainer_12864_1 {
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  width: 380px;
+  min-width: 380px;
+  background: #ffffff;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
   pointer-events: auto;
-  z-index: 10;
-  animation: _fadeIn_jd8mj_1 0.3s ease-out forwards;
+  animation: _fadeIn_12864_1 0.3s ease-out forwards;
 }
 
-@keyframes _fadeIn_jd8mj_1 {
+@keyframes _fadeIn_12864_1 {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-._messagesContainer_jd8mj_31 {
+._messagesContainer_12864_21 {
   flex: 1;
   padding: 20px 16px;
   overflow-y: auto;
@@ -2428,23 +2430,23 @@ function addAppToPage() {
   gap: 16px;
 }
 
-._message_jd8mj_31 {
+._message_12864_21 {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  max-width: 90%;
+  max-width: 95%;
 }
 
-._messageUser_jd8mj_47 {
+._messageUser_12864_37 {
   align-self: flex-end;
   flex-direction: row-reverse;
 }
 
-._messageBot_jd8mj_52 {
+._messageBot_12864_42 {
   align-self: flex-start;
 }
 
-._agentLogo_jd8mj_56 {
+._agentLogo_12864_46 {
   flex-shrink: 0;
   width: 28px;
   height: 28px;
@@ -2455,20 +2457,20 @@ function addAppToPage() {
   margin-top: 2px;
 }
 
-._agentLogo_jd8mj_56 img {
+._agentLogo_12864_46 img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
 }
 
-._messageWrapper_jd8mj_73 {
+._messageWrapper_12864_63 {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-._messageContent_jd8mj_80 {
+._messageContent_12864_70 {
   padding: 10px 14px;
   position: relative;
   width: fit-content;
@@ -2477,24 +2479,24 @@ function addAppToPage() {
   color: #1C1C1C;
 }
 
-._messageUser_jd8mj_47 ._messageContent_jd8mj_80 {
+._messageUser_12864_37 ._messageContent_12864_70 {
   background: #EBF3FE;
   align-self: flex-end;
   border-radius: 14px 14px 2px 14px;
 }
 
-._messageBot_jd8mj_52 ._messageContent_jd8mj_80 {
+._messageBot_12864_42 ._messageContent_12864_70 {
   background: #F4F4F5;
   align-self: flex-start;
   border-radius: 14px 14px 14px 2px;
 }
 
-._messageText_jd8mj_101 {
+._messageText_12864_91 {
   line-height: 1.5;
   word-wrap: break-word;
 }
 
-._messageTimestamp_jd8mj_106 {
+._messageTimestamp_12864_96 {
   font-size: 11px;
   opacity: 0.5;
   color: #444;
@@ -2502,36 +2504,36 @@ function addAppToPage() {
   margin-top: 2px;
 }
 
-._messageUser_jd8mj_47 ._messageTimestamp_jd8mj_106 {
+._messageUser_12864_37 ._messageTimestamp_12864_96 {
   align-self: flex-end;
   margin-left: 0;
   margin-right: 8px;
 }
 
-._messageInputForm_jd8mj_120 {
+._messageInputForm_12864_110 {
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   padding: 12px 16px;
   background: transparent;
 }
 
-._messageInputContainer_jd8mj_126 {
+._messageInputContainer_12864_116 {
   display: flex;
   flex-direction: column;
 }
 
-._inputRow_jd8mj_131 {
+._inputRow_12864_121 {
   display: flex;
   align-items: flex-end;
 }
 
-._textareaContainer_jd8mj_136 {
+._textareaContainer_12864_126 {
   position: relative;
   flex: 1;
   display: flex;
   align-items: flex-end;
 }
 
-._messageInput_jd8mj_120 {
+._messageInput_12864_110 {
   flex: 1;
   padding: 10px 14px;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -2547,18 +2549,18 @@ function addAppToPage() {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-._messageInput_jd8mj_120:focus {
+._messageInput_12864_110:focus {
   outline: none;
   border-color: #0176D3;
   box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
   background: #fff;
 }
 
-._messageInput_jd8mj_120::placeholder {
+._messageInput_12864_110::placeholder {
   color: #999;
 }
 
-._messageChoices_jd8mj_170 {
+._messageChoices_12864_160 {
   display: flex;
   flex-direction: column;
   border-radius: 12px;
@@ -2567,7 +2569,7 @@ function addAppToPage() {
   overflow: hidden;
 }
 
-._choiceButton_jd8mj_179 {
+._choiceButton_12864_169 {
   padding: 10px 14px;
   border: none;
   background: white;
@@ -2585,53 +2587,53 @@ function addAppToPage() {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-._choiceButton_jd8mj_179:last-child {
+._choiceButton_12864_169:last-child {
   border-bottom: none;
 }
 
-._choiceButton_jd8mj_179:hover {
+._choiceButton_12864_169:hover {
   background: #EBF3FE;
 }
 
-._choiceButton_jd8mj_179:active {
+._choiceButton_12864_169:active {
   background: #D6E8FC;
 }
 
-._choiceButton_jd8mj_179._selected_jd8mj_209 {
+._choiceButton_12864_169._selected_12864_199 {
   background: #EBF3FE;
   cursor: not-allowed;
   opacity: 0.7;
 }
 
-._typingIndicator_jd8mj_215 {
+._typingIndicator_12864_205 {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 4px 0;
 }
 
-._typingIndicator_jd8mj_215 span {
+._typingIndicator_12864_205 span {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background-color: #0176D3;
   opacity: 0.5;
-  animation: _typing_jd8mj_215 1.4s infinite ease-in-out;
+  animation: _typing_12864_205 1.4s infinite ease-in-out;
 }
 
-._typingIndicator_jd8mj_215 span:nth-child(1) {
+._typingIndicator_12864_205 span:nth-child(1) {
   animation-delay: -0.32s;
 }
 
-._typingIndicator_jd8mj_215 span:nth-child(2) {
+._typingIndicator_12864_205 span:nth-child(2) {
   animation-delay: -0.16s;
 }
 
-._typingIndicator_jd8mj_215 span:nth-child(3) {
+._typingIndicator_12864_205 span:nth-child(3) {
   animation-delay: 0;
 }
 
-@keyframes _typing_jd8mj_215 {
+@keyframes _typing_12864_205 {
   0%, 80%, 100% {
     transform: scale(0.8);
     opacity: 0.4;
@@ -2641,25 +2643,25 @@ function addAppToPage() {
     opacity: 1;
   }
 }
-._contentZoneContainer_enbj2_1 {
+._contentZoneContainer_1ayji_1 {
   display: flex;
   flex-direction: column;
   flex: 1;
-  width: 100%;
   background: #FAFBFC;
   overflow: hidden;
 }
 
-._contentZoneContent_enbj2_10 {
+._contentZoneContent_1ayji_9 {
   flex: 1;
   padding: 32px 40px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  justify-content: center;
   overflow-y: auto;
 }
 
-._blankContent_enbj2_19 {
+._blankContent_1ayji_19 {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -2669,35 +2671,35 @@ function addAppToPage() {
   color: #999;
 }
 
-._typingIndicator_enbj2_29 {
+._typingIndicator_1ayji_29 {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 4px 0;
 }
 
-._typingIndicator_enbj2_29 span {
+._typingIndicator_1ayji_29 span {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: #0176D3;
   opacity: 0.4;
-  animation: _typing_enbj2_29 1.4s infinite ease-in-out;
+  animation: _typing_1ayji_29 1.4s infinite ease-in-out;
 }
 
-._typingIndicator_enbj2_29 span:nth-child(1) {
+._typingIndicator_1ayji_29 span:nth-child(1) {
   animation-delay: -0.32s;
 }
 
-._typingIndicator_enbj2_29 span:nth-child(2) {
+._typingIndicator_1ayji_29 span:nth-child(2) {
   animation-delay: -0.16s;
 }
 
-._typingIndicator_enbj2_29 span:nth-child(3) {
+._typingIndicator_1ayji_29 span:nth-child(3) {
   animation-delay: 0;
 }
 
-@keyframes _typing_enbj2_29 {
+@keyframes _typing_1ayji_29 {
   0%, 80%, 100% {
     transform: scale(0.8);
     opacity: 0.4;
@@ -15781,25 +15783,25 @@ function requireClient() {
 var clientExports = requireClient();
 var reactExports = requireReact();
 const React = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
-const chatbotContainer = "_chatbotContainer_jd8mj_1";
-const messagesContainer = "_messagesContainer_jd8mj_31";
-const message = "_message_jd8mj_31";
-const messageUser = "_messageUser_jd8mj_47";
-const messageBot = "_messageBot_jd8mj_52";
-const agentLogo = "_agentLogo_jd8mj_56";
-const messageWrapper = "_messageWrapper_jd8mj_73";
-const messageContent = "_messageContent_jd8mj_80";
-const messageText = "_messageText_jd8mj_101";
-const messageTimestamp = "_messageTimestamp_jd8mj_106";
-const messageInputForm = "_messageInputForm_jd8mj_120";
-const messageInputContainer = "_messageInputContainer_jd8mj_126";
-const inputRow = "_inputRow_jd8mj_131";
-const textareaContainer = "_textareaContainer_jd8mj_136";
-const messageInput = "_messageInput_jd8mj_120";
-const messageChoices = "_messageChoices_jd8mj_170";
-const choiceButton = "_choiceButton_jd8mj_179";
-const selected = "_selected_jd8mj_209";
-const typingIndicator$1 = "_typingIndicator_jd8mj_215";
+const chatbotContainer = "_chatbotContainer_12864_1";
+const messagesContainer = "_messagesContainer_12864_21";
+const message = "_message_12864_21";
+const messageUser = "_messageUser_12864_37";
+const messageBot = "_messageBot_12864_42";
+const agentLogo = "_agentLogo_12864_46";
+const messageWrapper = "_messageWrapper_12864_63";
+const messageContent = "_messageContent_12864_70";
+const messageText = "_messageText_12864_91";
+const messageTimestamp = "_messageTimestamp_12864_96";
+const messageInputForm = "_messageInputForm_12864_110";
+const messageInputContainer = "_messageInputContainer_12864_116";
+const inputRow = "_inputRow_12864_121";
+const textareaContainer = "_textareaContainer_12864_126";
+const messageInput = "_messageInput_12864_110";
+const messageChoices = "_messageChoices_12864_160";
+const choiceButton = "_choiceButton_12864_169";
+const selected = "_selected_12864_199";
+const typingIndicator$1 = "_typingIndicator_12864_205";
 const styles$8 = {
   chatbotContainer,
   messagesContainer,
@@ -16082,10 +16084,10 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
     return baseModule().catch(handlePreloadError);
   });
 };
-const contentZoneContainer = "_contentZoneContainer_enbj2_1";
-const contentZoneContent = "_contentZoneContent_enbj2_10";
-const blankContent = "_blankContent_enbj2_19";
-const typingIndicator = "_typingIndicator_enbj2_29";
+const contentZoneContainer = "_contentZoneContainer_1ayji_1";
+const contentZoneContent = "_contentZoneContent_1ayji_9";
+const blankContent = "_blankContent_1ayji_19";
+const typingIndicator = "_typingIndicator_1ayji_29";
 const styles$7 = {
   contentZoneContainer,
   contentZoneContent,
@@ -18467,49 +18469,47 @@ const SearchBar = ({ show, onInitialMessage }) => {
   const [searchText, setSearchText] = reactExports.useState("");
   const [hasSentInitialMessage, setHasSentInitialMessage] = reactExports.useState(false);
   const AGENT_LOGO_IMAGE_URL = "https://zzpq-010.dx.commercecloud.salesforce.com/on/demandware.static/Sites-nto-Site/-/default/dw9814f411/images/favicons/favicon-32x32.png";
-  const searchActions2 = [
-    { text: "Shop Hiking Boots", value: "Shop Hiking Boots" },
-    { text: "Find Jackets", value: "Find Jackets" },
-    { text: "Browse Backpacks", value: "Browse Backpacks" }
-  ];
-  const handleSearch = (e) => {
-    var _a, _b;
-    e.preventDefault();
-    const target = e.target;
-    const textToSend = ((_a = target.searchText) == null ? void 0 : _a.value) || ((_b = target.buttonText) == null ? void 0 : _b.value);
+  const sendMessage = (text) => {
     if (!hasSentInitialMessage) {
-      onInitialMessage(textToSend);
+      onInitialMessage(text);
       setHasSentInitialMessage(true);
     } else {
-      window.AdaptiveWebsite.sendTextMessage(textToSend);
+      window.AdaptiveWebsite.sendTextMessage(text);
     }
     window.AdaptiveWebsite.maximize();
   };
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchText.trim()) {
+      sendMessage(searchText.trim());
+      setSearchText("");
+    }
+  };
+  const handleActionClick = (text) => {
+    sendMessage(text);
+  };
   return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: show && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.searchContainer, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSearch, className: styles$5.searchForm, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$5.searchBar, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.searchIcon, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: AGENT_LOGO_IMAGE_URL, alt: "Search" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.searchIcon, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: AGENT_LOGO_IMAGE_URL, alt: "Agent" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
         "input",
         {
           type: "text",
-          name: "searchText",
           value: searchText,
           onChange: (e) => setSearchText(e.target.value),
           placeholder: "Welcome! How can I help you today?",
           className: styles$5.searchInput
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.searchActions, children: searchActions2.map((action, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$5.searchActions, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
-          type: "submit",
-          name: "buttonText",
+          type: "button",
           className: styles$5.searchActionButton,
-          value: action.value,
-          children: action.text
-        },
-        index
-      )) })
+          onClick: () => handleActionClick("Recommend Signal services"),
+          children: "Recommend Signal Services"
+        }
+      ) })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       "svg",
@@ -18681,12 +18681,12 @@ function App() {
       setShowChatBot(false);
     }
   }, [conversationMessages]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "app", children: isReady && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `app ${showChatBot ? "app-expanded" : "app-collapsed"}`, children: isReady && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(SearchBar, { show: !showChatBot, onInitialMessage: handleInitialMessageFromUser }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Header, { show: showChatBot }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "conversation-container", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ChatBot, { show: showChatBot }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ContentZone, { show: showChatBot })
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ContentZone, { show: showChatBot }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ChatBot, { show: showChatBot })
     ] })
   ] }) });
 }
