@@ -2356,752 +2356,598 @@ function addAppToPage() {
       var elementStyle = document.createElement("style");
       elementStyle.appendChild(document.createTextNode(`.app {
   position: fixed !important;
-  bottom: 0px !important;
-  width: 100% !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 82vw !important;
+  height: 85vh !important;
   z-index: 2147483647 !important;
-  font-family: "Source Sans Pro", sans-serif !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .conversation-container {
   display: flex;
   flex-direction: row;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
 }
-._chatbotContainer_ixb5p_1 {
+._chatbotContainer_jd8mj_1 {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  bottom: 80px;
+  width: 340px;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 143px);
-  width: 26vw;
-  min-width: 200px;
-  border-top: 2px solid rgba(224, 224, 224, 0.8);
-  border-right: 2px solid rgba(224, 224, 224, 0.8);
-  background: rgba(255, 255, 255);
-  max-height: none;
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
   pointer-events: auto;
-  animation: _dropDown_ixb5p_1 0.5s ease-out forwards;
+  z-index: 10;
+  animation: _fadeIn_jd8mj_1 0.3s ease-out forwards;
 }
 
-@keyframes _dropDown_ixb5p_1 {
+@keyframes _fadeIn_jd8mj_1 {
   from {
-    transform: translateY(-100vh);
     opacity: 0;
+    transform: translateY(8px);
   }
   to {
-    transform: translateY(0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-._messagesContainer_ixb5p_27 {
+._messagesContainer_jd8mj_31 {
   flex: 1;
-  padding: 16px;
+  padding: 20px 16px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
-._message_ixb5p_27 {
+._message_jd8mj_31 {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: 80%;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 90%;
 }
 
-._messageUser_ixb5p_43 {
+._messageUser_jd8mj_47 {
   align-self: flex-end;
   flex-direction: row-reverse;
 }
 
-._messageBot_ixb5p_48 {
+._messageBot_jd8mj_52 {
   align-self: flex-start;
 }
 
-._agentLogo_ixb5p_52 {
+._agentLogo_jd8mj_56 {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   justify-content: center;
-  align-self: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-top: 2px;
+}
+
+._agentLogo_jd8mj_56 img {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
 }
 
-._messageWrapper_ixb5p_62 {
+._messageWrapper_jd8mj_73 {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 1rem;
 }
 
-._messageContent_ixb5p_70 {
-  background: #f1f3f4;
-  padding: 12px 16px;
+._messageContent_jd8mj_80 {
+  padding: 10px 14px;
   position: relative;
   width: fit-content;
-  color: var(--Text-text-default, #1C1C1C);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1C1C1C;
 }
 
-._messageUser_ixb5p_43 ._messageContent_ixb5p_70 {
-  background: #EEF4FF;
+._messageUser_jd8mj_47 ._messageContent_jd8mj_80 {
+  background: #EBF3FE;
   align-self: flex-end;
-  border-radius: 15px 15px 0px 15px;
+  border-radius: 14px 14px 2px 14px;
 }
 
-._messageBot_ixb5p_48 ._messageContent_ixb5p_70 {
-  background: #F3F3F3;
+._messageBot_jd8mj_52 ._messageContent_jd8mj_80 {
+  background: #F4F4F5;
   align-self: flex-start;
-  border-radius: 15px 15px 15px 0px;
+  border-radius: 14px 14px 14px 2px;
 }
 
-._messageText_ixb5p_90 {
-  line-height: 1.4;
+._messageText_jd8mj_101 {
+  line-height: 1.5;
   word-wrap: break-word;
-  max-width: 285px;
 }
 
-._messageTimestamp_ixb5p_96 {
+._messageTimestamp_jd8mj_106 {
   font-size: 11px;
-  opacity: 0.6;
-  color: var(--Text-Weak, #444);
-  margin-left: 12px;
-  align-self: flex-start;
+  opacity: 0.5;
+  color: #444;
+  margin-left: 8px;
+  margin-top: 2px;
 }
 
-._messageUser_ixb5p_43 ._messageTimestamp_ixb5p_96 {
+._messageUser_jd8mj_47 ._messageTimestamp_jd8mj_106 {
   align-self: flex-end;
   margin-left: 0;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
-._messageInputForm_ixb5p_110 {
-  border-top: 1px solid #e0e0e0;
-  padding: 16px 20px 16px 16px;
-  background: #393939;
+._messageInputForm_jd8mj_120 {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 12px 16px;
+  background: transparent;
 }
 
-._messageInputContainer_ixb5p_116 {
+._messageInputContainer_jd8mj_126 {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  border-bottom: 3px solid #006EBE;
 }
 
-._inputRow_ixb5p_123 {
+._inputRow_jd8mj_131 {
   display: flex;
   align-items: flex-end;
-  gap: 8px;
 }
 
-._textareaContainer_ixb5p_129 {
+._textareaContainer_jd8mj_136 {
   position: relative;
   flex: 1;
   display: flex;
   align-items: flex-end;
 }
 
-._messageInput_ixb5p_110 {
+._messageInput_jd8mj_120 {
   flex: 1;
-  padding: 12px 50px 12px 16px;
-  border: 1px solid #ddd;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
   resize: none;
   font-size: 14px;
   line-height: 1.4;
   min-height: 20px;
-  max-height: 120px;
+  max-height: 100px;
   overflow-y: auto;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #FAFAFA;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-._messageInput_ixb5p_110:focus {
+._messageInput_jd8mj_120:focus {
   outline: none;
-  border-color: #EEF4FF;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  border-color: #0176D3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+  background: #fff;
 }
 
-._messageChoices_ixb5p_155 {
+._messageInput_jd8mj_120::placeholder {
+  color: #999;
+}
+
+._messageChoices_jd8mj_170 {
   display: flex;
-  width: 280px;
   flex-direction: column;
-  align-items: flex-end;
-  border-radius: 4px;
-  border: 1px solid #949494;
-  margin-top: 8px; /* Keep small margin from message box */
-  overflow: hidden; /* Ensure child elements don't overflow rounded corners */
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+  overflow: hidden;
 }
 
-._choiceButton_ixb5p_166 {
-  padding: 12px 16px;
-  border: none; /* Remove individual borders since container has border */
+._choiceButton_jd8mj_179 {
+  padding: 10px 14px;
+  border: none;
   background: white;
-  color: #333333;
-  border-radius: 0; /* Remove default border radius */
+  color: #1C1C1C;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s ease;
+  font-size: 13px;
+  transition: all 0.15s ease;
   text-align: left;
-  min-height: 44px;
+  min-height: 40px;
   display: flex;
   align-items: center;
-  width: 100%; /* Fill container width */
-  border-bottom: 1px solid #949494; /* Add border between buttons using container color */
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-._choiceButton_ixb5p_166:hover {
-  background: #EEF4FF;
-  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+._choiceButton_jd8mj_179:last-child {
+  border-bottom: none;
 }
 
-._choiceButton_ixb5p_166:active {
-  box-shadow: 0 1px 2px rgba(0, 123, 255, 0.2);
+._choiceButton_jd8mj_179:hover {
+  background: #EBF3FE;
 }
 
-._choiceButton_ixb5p_166._selected_ixb5p_192 {
-  background: #EEF4FF;
-  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+._choiceButton_jd8mj_179:active {
+  background: #D6E8FC;
+}
+
+._choiceButton_jd8mj_179._selected_jd8mj_209 {
+  background: #EBF3FE;
   cursor: not-allowed;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
-._choiceButton_ixb5p_166._selected_ixb5p_192:hover {
-  background: #EEF4FF; /* Keep same background on hover */
-  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2); /* Keep same shadow */
-}
-
-._typingIndicator_ixb5p_204 {
+._typingIndicator_jd8mj_215 {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 4px 0;
 }
 
-._typingIndicator_ixb5p_204 span {
-  width: 8px;
-  height: 8px;
+._typingIndicator_jd8mj_215 span {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background-color: #999;
-  animation: _typing_ixb5p_204 1.4s infinite ease-in-out;
+  background-color: #0176D3;
+  opacity: 0.5;
+  animation: _typing_jd8mj_215 1.4s infinite ease-in-out;
 }
 
-._typingIndicator_ixb5p_204 span:nth-child(1) {
+._typingIndicator_jd8mj_215 span:nth-child(1) {
   animation-delay: -0.32s;
 }
 
-._typingIndicator_ixb5p_204 span:nth-child(2) {
+._typingIndicator_jd8mj_215 span:nth-child(2) {
   animation-delay: -0.16s;
 }
 
-._typingIndicator_ixb5p_204 span:nth-child(3) {
+._typingIndicator_jd8mj_215 span:nth-child(3) {
   animation-delay: 0;
 }
 
-@keyframes _typing_ixb5p_204 {
+@keyframes _typing_jd8mj_215 {
   0%, 80%, 100% {
     transform: scale(0.8);
-    opacity: 0.5;
+    opacity: 0.4;
   }
   40% {
     transform: scale(1);
     opacity: 1;
   }
 }
-
-._contentZoneContainer_1hs9j_1 {
+._contentZoneContainer_enbj2_1 {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 143px);
-  width: calc(74vw);
-  min-width: 200px;
-  border: 2px solid rgba(224, 224, 224, 0.8);
-  background: #FFFFFF;
-  backdrop-filter: blur(10px);
-  pointer-events: auto;
-  animation: _dropDown_1hs9j_1 0.5s ease-out forwards;
-}
-
-@keyframes _dropDown_1hs9j_1 {
-  from {
-    transform: translateY(-100vh);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-._contentZoneContent_1hs9j_25 {
   flex: 1;
-  padding: 20px;
+  width: 100%;
+  background: #FAFBFC;
+  overflow: hidden;
+}
+
+._contentZoneContent_enbj2_10 {
+  flex: 1;
+  padding: 32px 40px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  overflow: scroll;
+  overflow-y: auto;
 }
 
-._blankContent_1hs9j_34 {
+._blankContent_enbj2_19 {
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  color: #666;
+  color: #999;
 }
 
-._typingIndicator_1hs9j_44 {
+._typingIndicator_enbj2_29 {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 4px 0;
 }
 
-._typingIndicator_1hs9j_44 span {
+._typingIndicator_enbj2_29 span {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #999;
-  animation: _typing_1hs9j_44 1.4s infinite ease-in-out;
+  background-color: #0176D3;
+  opacity: 0.4;
+  animation: _typing_enbj2_29 1.4s infinite ease-in-out;
 }
 
-._typingIndicator_1hs9j_44 span:nth-child(1) {
+._typingIndicator_enbj2_29 span:nth-child(1) {
   animation-delay: -0.32s;
 }
 
-._typingIndicator_1hs9j_44 span:nth-child(2) {
+._typingIndicator_enbj2_29 span:nth-child(2) {
   animation-delay: -0.16s;
 }
 
-._typingIndicator_1hs9j_44 span:nth-child(3) {
+._typingIndicator_enbj2_29 span:nth-child(3) {
   animation-delay: 0;
 }
 
-@keyframes _typing_1hs9j_44 {
+@keyframes _typing_enbj2_29 {
   0%, 80%, 100% {
     transform: scale(0.8);
-    opacity: 0.5;
+    opacity: 0.4;
   }
   40% {
     transform: scale(1);
     opacity: 1;
   }
 }
-
-._headerContainer_1983q_1 {
+._headerContainer_1kdxn_1 {
   display: flex;
   align-items: center;
   position: relative;
-  width: 100vw;
-  height: 70px;
-  padding: 0 30px;
-  background-color: #393939;
+  width: 100%;
+  height: 56px;
+  padding: 0 24px;
+  background: #032D60;
 }
 
-._agentName_1983q_11 {
+._agentName_1kdxn_11 {
   color: white;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
-._endConversationButton_1983q_19 {
+._agentName_1kdxn_11 h3 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+._agentBadge_1kdxn_24 {
+  margin-left: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+._endConversationButton_1kdxn_35 {
   position: absolute;
-  right: 80px;
+  right: 64px;
   top: 50%;
   transform: translateY(-50%);
-  background: #097fb3;
+  background: #0176D3;
   border: none;
-  padding: 8px 16px;
+  padding: 8px 18px;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
   color: white;
   transition: all 0.2s ease;
 }
 
-._endConversationButton_1983q_19:hover {
-  background-color: #076a94;
+._endConversationButton_1kdxn_35:hover {
+  background: #0161b3;
+  box-shadow: 0 2px 8px rgba(1, 118, 211, 0.3);
 }
 
-._minimizeButton_1983q_38 {
+._minimizeButton_1kdxn_56 {
   position: absolute;
-  right: 32px;
+  right: 20px;
   top: 50%;
   color: white;
   cursor: pointer;
   transform: translateY(-50%);
   border: none;
+  background: none;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
 }
-._searchContainer_lpcxl_1 {
+
+._minimizeButton_1kdxn_56:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+._searchContainer_mqt41_1 {
   display: flex;
-  width: 100vw;
-  height: 80px;
+  width: 100%;
+  height: 64px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  background: #393939;
+  background: #032D60;
   position: relative;
+  border-radius: 0 0 20px 20px;
 }
 
-._searchForm_lpcxl_12 {
+._searchForm_mqt41_13 {
   display: flex;
   align-items: center;
-  grid-column: 2;
   width: 94%;
-  height: 45px;
-  flex-shrink: 0;
+  height: 42px;
 }
 
-._searchBar_lpcxl_21 {
+._searchBar_mqt41_20 {
   display: flex;
   background: #FFFFFF;
-  height: 50px;
-  width: 94vw;
-  border-bottom: 3px solid #006EBE;
+  height: 42px;
+  width: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: box-shadow 0.2s ease;
 }
 
-._searchBar_lpcxl_21:focus-within {
-  border-color: #006EBE;
-  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
+._searchBar_mqt41_20:focus-within {
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.2);
 }
 
-._searchInput_lpcxl_34 {
+._searchInput_mqt41_35 {
   flex: 1;
   border: none;
   outline: none;
-  font-size: 16px;
-  padding: 12px 16px;
+  font-size: 14px;
+  padding: 0 16px;
   background: transparent;
   color: #333;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-._searchInput_lpcxl_34::placeholder {
-  color: #333;
-  font-size: 16px;
-  overflow: hidden;
+._searchInput_mqt41_35::placeholder {
+  color: #666;
+  font-size: 14px;
 }
 
-._searchActions_lpcxl_50 {
+._searchActions_mqt41_51 {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0px 12px;
+  margin-right: 6px;
 }
 
-._searchActionButton_lpcxl_57 {
-  background: #097fb3;
+._searchActionButton_mqt41_58 {
+  background: #0176D3;
   border: none;
-  padding: 8px 16px;
+  padding: 7px 16px;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
   color: white;
   transition: all 0.2s ease;
   white-space: nowrap;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-._searchActionButton_lpcxl_57:hover {
-  background-color: #076a94;
+._searchActionButton_mqt41_58:hover {
+  background: #0161b3;
+  box-shadow: 0 2px 6px rgba(1, 118, 211, 0.3);
 }
 
-._searchIcon_lpcxl_73 {
+._searchIcon_mqt41_77 {
   width: 1.5rem;
   height: 1.5rem;
   aspect-ratio: 1/1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: auto 0 auto 12px;
+  margin: auto 0 auto 14px;
   flex-shrink: 0;
 }
 
-._searchIcon_lpcxl_73 img {
+._searchIcon_mqt41_77 img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  border-radius: 50%;
 }
 
-._expandButton_lpcxl_90 {
-  width: 22px;
-  height: 22px;
+._expandButton_mqt41_95 {
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   aspect-ratio: 1/1;
   position: absolute;
-  right: 1vw;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
 }
 
-._recsTemplate_153zu_1 {
+._expandButton_mqt41_95:hover {
+  opacity: 1;
+}
+._recsTemplate_1jf9y_1 {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 24px;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-._recsBanner_153zu_9 {
+._recsProductsGrid_1jf9y_9 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   width: 100%;
-  height: 250px;
+  max-width: 700px;
+}
+._productCard_108ed_1 {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+._productCard_108ed_1:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+._productImageContainer_108ed_16 {
+  width: 100%;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
   overflow: hidden;
 }
 
-._recsBanner_153zu_9 img {
+._productImageContainer_108ed_16 img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-._recsProductsGrid_153zu_21 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  width: 100%;
-}
-
-._compareButtonContainer_153zu_28 {
-  position: absolute;
-  bottom: 0px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-._compareButton_153zu_28 {
-  background-color: #097fb3;
-  color: white;
-  padding: 12px 24px;
+._productName_108ed_32 {
   font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-  border: none;
-}
-
-._compareButton_153zu_28:hover {
-  background-color: #076a94;
-}
-
-._compareButton_153zu_28:active {
-  background-color: #055a7a;
-}._productLink_1oysg_1 {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-._productCard_1oysg_7 {
-  position: relative;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 0;
-  transition: box-shadow 0.2s ease;
-}
-
-._productCard_1oysg_7:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-._productFavorite_1oysg_22 {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 2;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
-}
-
-._productFavorite_1oysg_22:hover {
-  background: rgba(255, 255, 255, 1);
-}
-
-._productFavorite_1oysg_22 svg {
-  width: 18px;
-  height: 18px;
-  stroke: #097fb3;
-  fill: none;
-  stroke-width: 1.5;
-}
-
-._productFavorite_1oysg_22:hover svg {
-  fill: #076a94;
-  stroke: #076a94;
-}
-
-._productImageContainer_1oysg_54 {
-  width: 100%;
-  height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  overflow: hidden;
-  position: relative;
-}
-
-._productImageContainer_1oysg_54 img {
-  width: auto;
-  height: 100%;
-  padding: 8px;
-}
-
-._productName_1oysg_71 {
-  font-size: 13px;
-  font-weight: 400;
-  color: #333;
+  font-weight: 600;
+  color: #181818;
   line-height: 1.4;
-  padding: 0 12px;
-  min-height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 14px 16px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
-
-._productPrice_1oysg_83 {
-  font-size: 15px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 8px;
-  letter-spacing: 0.3px;
-}
-
-._productCompare_1oysg_91 {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 12px 0px;
-}
-
-._productCompare_1oysg_91 input[type="checkbox"] {
-  width: 14px;
-  height: 14px;
-  cursor: pointer;
-  accent-color: #333;
-  margin: 0;
-  flex-shrink: 0;
-}
-
-._productCompare_1oysg_91 input[type="checkbox"]:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-._productCompare_1oysg_91 label {
-  font-size: 13px;
-  color: #333;
-  cursor: pointer;
-  user-select: none;
-  font-weight: 400;
-  line-height: 1;
-}
-
-._productRating_12zy1_1 {
-  display: flex;
-  gap: 1px;
-  line-height: 1;
-  align-items: center;
-}
-
-._small_12zy1_8 {
-  font-size: 14px;
-  height: 16px;
-}
-
-._large_12zy1_13 {
-  font-size: 16px;
-  height: 20px;
-}
-
-._star_12zy1_18 {
-  display: inline-block;
-  color: #097fb3;
-  line-height: 1;
-}
-
-._small_12zy1_8 ._star_12zy1_18 {
-  font-size: 14px;
-}
-
-._large_12zy1_13 ._star_12zy1_18 {
-  font-size: 16px;
-}
-
-._starFull_12zy1_32 {
-  color: #097fb3;
-}
-
-._starHalf_12zy1_36 {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-}
-
-._small_12zy1_8 ._starHalf_12zy1_36 {
-  width: 14px;
-  height: 14px;
-}
-
-._large_12zy1_13 ._starHalf_12zy1_36 {
-  width: 16px;
-  height: 16px;
-}
-
-._starHalfFilled_12zy1_52 {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 50%;
-  overflow: hidden;
-  color: #097fb3;
-  line-height: 1;
-}
-
-._small_12zy1_8 ._starHalfFilled_12zy1_52 {
-  font-size: 14px;
-}
-
-._large_12zy1_13 ._starHalfFilled_12zy1_52 {
-  font-size: 16px;
-}
-
-._starHalfEmpty_12zy1_70 {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  color: #e0e0e0;
-  line-height: 1;
-  z-index: -1;
-}
-
-._small_12zy1_8 ._starHalfEmpty_12zy1_70 {
-  font-size: 14px;
-}
-
-._large_12zy1_13 ._starHalfEmpty_12zy1_70 {
-  font-size: 16px;
-}
-
-._starEmpty_12zy1_88 {
-  color: #e0e0e0;
-}
-
 ._comparisonTemplate_1nvy2_1 {
   display: flex;
   flex-direction: column;
@@ -3337,6 +3183,97 @@ function addAppToPage() {
   ._productDetailsTemplate_19kxk_1 {
     padding: 16px;
   }
+}
+
+._productRating_12zy1_1 {
+  display: flex;
+  gap: 1px;
+  line-height: 1;
+  align-items: center;
+}
+
+._small_12zy1_8 {
+  font-size: 14px;
+  height: 16px;
+}
+
+._large_12zy1_13 {
+  font-size: 16px;
+  height: 20px;
+}
+
+._star_12zy1_18 {
+  display: inline-block;
+  color: #097fb3;
+  line-height: 1;
+}
+
+._small_12zy1_8 ._star_12zy1_18 {
+  font-size: 14px;
+}
+
+._large_12zy1_13 ._star_12zy1_18 {
+  font-size: 16px;
+}
+
+._starFull_12zy1_32 {
+  color: #097fb3;
+}
+
+._starHalf_12zy1_36 {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+._small_12zy1_8 ._starHalf_12zy1_36 {
+  width: 14px;
+  height: 14px;
+}
+
+._large_12zy1_13 ._starHalf_12zy1_36 {
+  width: 16px;
+  height: 16px;
+}
+
+._starHalfFilled_12zy1_52 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  color: #097fb3;
+  line-height: 1;
+}
+
+._small_12zy1_8 ._starHalfFilled_12zy1_52 {
+  font-size: 14px;
+}
+
+._large_12zy1_13 ._starHalfFilled_12zy1_52 {
+  font-size: 16px;
+}
+
+._starHalfEmpty_12zy1_70 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: #e0e0e0;
+  line-height: 1;
+  z-index: -1;
+}
+
+._small_12zy1_8 ._starHalfEmpty_12zy1_70 {
+  font-size: 14px;
+}
+
+._large_12zy1_13 ._starHalfEmpty_12zy1_70 {
+  font-size: 16px;
+}
+
+._starEmpty_12zy1_88 {
+  color: #e0e0e0;
 }`));
       document.head.appendChild(elementStyle);
     }
@@ -15844,25 +15781,25 @@ function requireClient() {
 var clientExports = requireClient();
 var reactExports = requireReact();
 const React = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
-const chatbotContainer = "_chatbotContainer_ixb5p_1";
-const messagesContainer = "_messagesContainer_ixb5p_27";
-const message = "_message_ixb5p_27";
-const messageUser = "_messageUser_ixb5p_43";
-const messageBot = "_messageBot_ixb5p_48";
-const agentLogo = "_agentLogo_ixb5p_52";
-const messageWrapper = "_messageWrapper_ixb5p_62";
-const messageContent = "_messageContent_ixb5p_70";
-const messageText = "_messageText_ixb5p_90";
-const messageTimestamp = "_messageTimestamp_ixb5p_96";
-const messageInputForm = "_messageInputForm_ixb5p_110";
-const messageInputContainer = "_messageInputContainer_ixb5p_116";
-const inputRow = "_inputRow_ixb5p_123";
-const textareaContainer = "_textareaContainer_ixb5p_129";
-const messageInput = "_messageInput_ixb5p_110";
-const messageChoices = "_messageChoices_ixb5p_155";
-const choiceButton = "_choiceButton_ixb5p_166";
-const selected = "_selected_ixb5p_192";
-const typingIndicator$1 = "_typingIndicator_ixb5p_204";
+const chatbotContainer = "_chatbotContainer_jd8mj_1";
+const messagesContainer = "_messagesContainer_jd8mj_31";
+const message = "_message_jd8mj_31";
+const messageUser = "_messageUser_jd8mj_47";
+const messageBot = "_messageBot_jd8mj_52";
+const agentLogo = "_agentLogo_jd8mj_56";
+const messageWrapper = "_messageWrapper_jd8mj_73";
+const messageContent = "_messageContent_jd8mj_80";
+const messageText = "_messageText_jd8mj_101";
+const messageTimestamp = "_messageTimestamp_jd8mj_106";
+const messageInputForm = "_messageInputForm_jd8mj_120";
+const messageInputContainer = "_messageInputContainer_jd8mj_126";
+const inputRow = "_inputRow_jd8mj_131";
+const textareaContainer = "_textareaContainer_jd8mj_136";
+const messageInput = "_messageInput_jd8mj_120";
+const messageChoices = "_messageChoices_jd8mj_170";
+const choiceButton = "_choiceButton_jd8mj_179";
+const selected = "_selected_jd8mj_209";
+const typingIndicator$1 = "_typingIndicator_jd8mj_215";
 const styles$8 = {
   chatbotContainer,
   messagesContainer,
@@ -16145,10 +16082,10 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
     return baseModule().catch(handlePreloadError);
   });
 };
-const contentZoneContainer = "_contentZoneContainer_1hs9j_1";
-const contentZoneContent = "_contentZoneContent_1hs9j_25";
-const blankContent = "_blankContent_1hs9j_34";
-const typingIndicator = "_typingIndicator_1hs9j_44";
+const contentZoneContainer = "_contentZoneContainer_enbj2_1";
+const contentZoneContent = "_contentZoneContent_enbj2_10";
+const blankContent = "_blankContent_enbj2_19";
+const typingIndicator = "_typingIndicator_enbj2_29";
 const styles$7 = {
   contentZoneContainer,
   contentZoneContent,
@@ -18473,62 +18410,49 @@ const Placeholder = () => {
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", {})
   ] }) });
 };
-const headerContainer = "_headerContainer_1983q_1";
-const agentName = "_agentName_1983q_11";
-const endConversationButton = "_endConversationButton_1983q_19";
-const minimizeButton = "_minimizeButton_1983q_38";
+const headerContainer = "_headerContainer_1kdxn_1";
+const agentName = "_agentName_1kdxn_11";
+const agentBadge = "_agentBadge_1kdxn_24";
+const endConversationButton = "_endConversationButton_1kdxn_35";
+const minimizeButton = "_minimizeButton_1kdxn_56";
 const styles$6 = {
   headerContainer,
   agentName,
+  agentBadge,
   endConversationButton,
   minimizeButton
 };
 const Header = ({ show }) => {
-  const AGENT_NAME = "Adaptive Web Agent";
+  const AGENT_NAME = "Signal Assistant";
   if (!show) {
     return null;
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.headerContainer, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.agentName, children: /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: AGENT_NAME }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles$6.agentBadge, children: "Powered by Agentforce" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: styles$6.endConversationButton, onClick: window.AdaptiveWebsite.endConversation, children: "End Conversation" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       "button",
       {
         className: styles$6.minimizeButton,
         onClick: window.AdaptiveWebsite.minimize,
-        "aria-label": "Minimize content zone",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "svg",
-          {
-            xmlns: "http://www.w3.org/2000/svg",
-            width: "22",
-            height: "22",
-            viewBox: "0 0 18 18",
-            fill: "none",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "path",
-              {
-                d: "M5 7L9 11L13 7",
-                stroke: "currentColor",
-                strokeWidth: "2",
-                strokeLinecap: "round",
-                strokeLinejoin: "round"
-              }
-            )
-          }
-        )
+        "aria-label": "Minimize",
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: "18", y1: "6", x2: "6", y2: "18" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: "6", y1: "6", x2: "18", y2: "18" })
+        ] })
       }
     )
   ] });
 };
-const searchContainer = "_searchContainer_lpcxl_1";
-const searchForm = "_searchForm_lpcxl_12";
-const searchBar = "_searchBar_lpcxl_21";
-const searchInput = "_searchInput_lpcxl_34";
-const searchActions = "_searchActions_lpcxl_50";
-const searchActionButton = "_searchActionButton_lpcxl_57";
-const searchIcon = "_searchIcon_lpcxl_73";
-const expandButton = "_expandButton_lpcxl_90";
+const searchContainer = "_searchContainer_mqt41_1";
+const searchForm = "_searchForm_mqt41_13";
+const searchBar = "_searchBar_mqt41_20";
+const searchInput = "_searchInput_mqt41_35";
+const searchActions = "_searchActions_mqt41_51";
+const searchActionButton = "_searchActionButton_mqt41_58";
+const searchIcon = "_searchIcon_mqt41_77";
+const expandButton = "_expandButton_mqt41_95";
 const styles$5 = {
   searchContainer,
   searchForm,
@@ -18793,144 +18717,30 @@ if (!appendToBody()) {
     subtree: true
   });
 }
-const recsTemplate = "_recsTemplate_153zu_1";
-const recsBanner = "_recsBanner_153zu_9";
-const recsProductsGrid = "_recsProductsGrid_153zu_21";
-const compareButtonContainer = "_compareButtonContainer_153zu_28";
-const compareButton = "_compareButton_153zu_28";
+const recsTemplate = "_recsTemplate_1jf9y_1";
+const recsProductsGrid = "_recsProductsGrid_1jf9y_9";
 const styles$4 = {
   recsTemplate,
-  recsBanner,
-  recsProductsGrid,
-  compareButtonContainer,
-  compareButton
+  recsProductsGrid
 };
-const productLink = "_productLink_1oysg_1";
-const productCard = "_productCard_1oysg_7";
-const productFavorite = "_productFavorite_1oysg_22";
-const productImageContainer$1 = "_productImageContainer_1oysg_54";
-const productName$1 = "_productName_1oysg_71";
-const productPrice$1 = "_productPrice_1oysg_83";
-const productCompare = "_productCompare_1oysg_91";
+const productCard = "_productCard_108ed_1";
+const productImageContainer$1 = "_productImageContainer_108ed_16";
+const productName$1 = "_productName_108ed_32";
 const styles$3 = {
-  productLink,
   productCard,
-  productFavorite,
   productImageContainer: productImageContainer$1,
-  productName: productName$1,
-  productPrice: productPrice$1,
-  productCompare
+  productName: productName$1
 };
-const productRating = "_productRating_12zy1_1";
-const small = "_small_12zy1_8";
-const large = "_large_12zy1_13";
-const star = "_star_12zy1_18";
-const starFull = "_starFull_12zy1_32";
-const starHalf = "_starHalf_12zy1_36";
-const starHalfFilled = "_starHalfFilled_12zy1_52";
-const starHalfEmpty = "_starHalfEmpty_12zy1_70";
-const starEmpty = "_starEmpty_12zy1_88";
-const styles$2 = {
-  productRating,
-  small,
-  large,
-  star,
-  starFull,
-  starHalf,
-  starHalfFilled,
-  starHalfEmpty,
-  starEmpty
-};
-const ProductStars = ({ rating, size = "small" }) => {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 >= 0.5;
-  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-  const sizeClass = size === "large" ? styles$2.large : styles$2.small;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `${styles$2.productRating} ${sizeClass}`, children: [
-    [...Array(fullStars)].map((_, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `${styles$2.star} ${styles$2.starFull}`, children: "★" }, `full-${i}`)),
-    hasHalfStar && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `${styles$2.star} ${styles$2.starHalf}`, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles$2.starHalfFilled, children: "★" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles$2.starHalfEmpty, children: "★" })
-    ] }),
-    [...Array(emptyStars)].map((_, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `${styles$2.star} ${styles$2.starEmpty}`, children: "★" }, `empty-${i}`))
+const ProductCard = ({ product }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.productCard, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: product.image, alt: product.name }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productName, children: product.name })
   ] });
-};
-const ProductCard = ({
-  product,
-  onCompareChange,
-  showCompare,
-  compareDisabled
-}) => {
-  const handleFavoriteClick = (e) => {
-    logger.debug("Favorite clicked for product:", product.id);
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "a",
-    {
-      href: "#",
-      className: styles$3.productLink,
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.productCard, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productFavorite, onClick: handleFavoriteClick, children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" }) }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: product.image, alt: product.name }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productName, children: product.name }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$3.productPrice, children: product.price }),
-        product.rating && /* @__PURE__ */ jsxRuntimeExports.jsx(ProductStars, { rating: product.rating, size: "small" }),
-        showCompare && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$3.productCompare, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "checkbox",
-              id: `compare-${product.id}`,
-              onChange: () => onCompareChange && onCompareChange(product.id),
-              disabled: compareDisabled
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: `compare-${product.id}`, children: "Compare" })
-        ] })
-      ] })
-    }
-  );
 };
 const Recs = ({ content }) => {
   const recsData = (content == null ? void 0 : content.curation) || {};
   const products = (recsData == null ? void 0 : recsData.products) || [];
-  const bannerImage = recsData == null ? void 0 : recsData.bannerImage;
-  const MAX_COMPARE_PRODUCTS = 3;
-  const [compareCheckboxesSelected, setCompareCheckboxesSelected] = reactExports.useState([]);
-  const handleCompareChange = (id) => {
-    if (compareCheckboxesSelected.includes(id)) {
-      setCompareCheckboxesSelected(compareCheckboxesSelected.filter((refId) => refId !== id));
-    } else {
-      setCompareCheckboxesSelected([...compareCheckboxesSelected, id]);
-    }
-  };
-  const handleCompareProducts = () => {
-    logger.debug("Comparing products:", compareCheckboxesSelected);
-  };
-  const shouldDisableCompareCheckbox = (id) => {
-    return compareCheckboxesSelected.length >= MAX_COMPARE_PRODUCTS && !compareCheckboxesSelected.includes(id);
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$4.recsTemplate, children: [
-    bannerImage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.recsBanner, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: bannerImage, alt: "Banner" }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.recsProductsGrid, children: products.map((product) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      ProductCard,
-      {
-        product,
-        showCompare: true,
-        compareDisabled: shouldDisableCompareCheckbox(product.id),
-        onCompareChange: handleCompareChange
-      },
-      product.id
-    )) }),
-    compareCheckboxesSelected.length >= MAX_COMPARE_PRODUCTS && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.compareButtonContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        className: styles$4.compareButton,
-        onClick: handleCompareProducts,
-        children: "Compare Products"
-      }
-    ) })
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.recsTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$4.recsProductsGrid, children: products.map((product) => /* @__PURE__ */ jsxRuntimeExports.jsx(ProductCard, { product }, product.id)) }) });
 };
 const Recs$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -18943,7 +18753,7 @@ const featuresSection$1 = "_featuresSection_1nvy2_21";
 const featureRow = "_featureRow_1nvy2_28";
 const featureName$1 = "_featureName_1nvy2_37";
 const featureValue$1 = "_featureValue_1nvy2_46";
-const styles$1 = {
+const styles$2 = {
   comparisonTemplate,
   comparisonGrid,
   comparisonColumn,
@@ -18972,11 +18782,11 @@ const Comparison = ({ content }) => {
     const feature = (_a = product.features) == null ? void 0 : _a.find((f) => f.name === featureName2);
     return (feature == null ? void 0 : feature.value) || "—";
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.comparisonTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.comparisonGrid, children: displayProducts.map((product) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.comparisonColumn, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.comparisonTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.comparisonGrid, children: displayProducts.map((product) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.comparisonColumn, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(ProductCard, { product }),
-    allFeatures.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featuresSection, children: allFeatures.map((featureName2, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.featureRow, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureName, children: featureName2 }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.featureValue, children: getFeatureValue(product, featureName2) })
+    allFeatures.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.featuresSection, children: allFeatures.map((featureName2, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$2.featureRow, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.featureName, children: featureName2 }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$2.featureValue, children: getFeatureValue(product, featureName2) })
     ] }, index)) })
   ] }, product.id)) }) });
 };
@@ -19001,7 +18811,7 @@ const featuresList = "_featuresList_19kxk_149";
 const featureItem = "_featureItem_19kxk_158";
 const featureName = "_featureName_19kxk_165";
 const featureValue = "_featureValue_19kxk_170";
-const styles = {
+const styles$1 = {
   productDetailsTemplate,
   productDetailsContainer,
   productImageSection,
@@ -19020,6 +18830,40 @@ const styles = {
   featureName,
   featureValue
 };
+const productRating = "_productRating_12zy1_1";
+const small = "_small_12zy1_8";
+const large = "_large_12zy1_13";
+const star = "_star_12zy1_18";
+const starFull = "_starFull_12zy1_32";
+const starHalf = "_starHalf_12zy1_36";
+const starHalfFilled = "_starHalfFilled_12zy1_52";
+const starHalfEmpty = "_starHalfEmpty_12zy1_70";
+const starEmpty = "_starEmpty_12zy1_88";
+const styles = {
+  productRating,
+  small,
+  large,
+  star,
+  starFull,
+  starHalf,
+  starHalfFilled,
+  starHalfEmpty,
+  starEmpty
+};
+const ProductStars = ({ rating, size = "small" }) => {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  const sizeClass = size === "large" ? styles.large : styles.small;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `${styles.productRating} ${sizeClass}`, children: [
+    [...Array(fullStars)].map((_, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `${styles.star} ${styles.starFull}`, children: "★" }, `full-${i}`)),
+    hasHalfStar && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `${styles.star} ${styles.starHalf}`, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles.starHalfFilled, children: "★" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles.starHalfEmpty, children: "★" })
+    ] }),
+    [...Array(emptyStars)].map((_, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `${styles.star} ${styles.starEmpty}`, children: "★" }, `empty-${i}`))
+  ] });
+};
 const ProductDetails = ({ content }) => {
   const detailsData = (content == null ? void 0 : content.curation) || {};
   const product = detailsData == null ? void 0 : detailsData.product;
@@ -19032,21 +18876,21 @@ const ProductDetails = ({ content }) => {
   const handleFavoriteClick = () => {
     logger.debug("Favorite clicked for product:", product.id);
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productDetailsTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.productDetailsContainer, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageSection, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: product.image, alt: product.name }) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.productInfoSection, children: [
-      product.itemNumber && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.itemNumber, children: [
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.productDetailsTemplate, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.productDetailsContainer, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.productImageSection, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.productImageContainer, children: /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: product.image, alt: product.name }) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.productInfoSection, children: [
+      product.itemNumber && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.itemNumber, children: [
         "ITEM NO.: ",
         product.itemNumber
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: styles.productName, children: product.name }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles.productPrice, children: product.price }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: styles$1.productName, children: product.name }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$1.productPrice, children: product.price }),
       product.rating && /* @__PURE__ */ jsxRuntimeExports.jsx(ProductStars, { rating: product.rating, size: "large" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.actionButtons, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.actionButtons, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
-            className: styles.addToCartButton,
+            className: styles$1.addToCartButton,
             onClick: handleAddToCart,
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: [
@@ -19061,20 +18905,20 @@ const ProductDetails = ({ content }) => {
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
-            className: styles.favoriteButton,
+            className: styles$1.favoriteButton,
             onClick: handleFavoriteClick,
             children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" }) })
           }
         )
       ] }),
-      product.features && product.features.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles.featuresSection, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: styles.featuresTitle, children: "FEATURES" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: styles.featuresList, children: product.features.map((feature, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: styles.featureItem, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: styles.featureName, children: [
+      product.features && product.features.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$1.featuresSection, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: styles$1.featuresTitle, children: "FEATURES" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: styles$1.featuresList, children: product.features.map((feature, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: styles$1.featureItem, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: styles$1.featureName, children: [
             feature.name,
             ":"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles.featureValue, children: feature.value })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles$1.featureValue, children: feature.value })
         ] }, index)) })
       ] })
     ] })
