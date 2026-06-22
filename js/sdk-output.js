@@ -15951,7 +15951,7 @@ const getMessagePayloadFromConversationEntry = (entry) => {
 };
 const ChatBot = ({ show }) => {
   const AGENT_LOGO_IMAGE_URL = "data:image/svg+xml,%3Csvg viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='16' cy='16' r='16' fill='%230176D3'/%3E%3Cpath d='M8 22 Q16 6 24 22' stroke='white' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M10.5 22 Q16 10 21.5 22' stroke='white' stroke-width='2' stroke-linecap='round' fill='none' opacity='0.7'/%3E%3Ccircle cx='16' cy='22' r='1.5' fill='white'/%3E%3C/svg%3E";
-  const AGENT_NAME = "Robotic Operating Buddy";
+  const AGENT_NAME = "R.O.B.";
   const [inputText, setInputText] = reactExports.useState("");
   const [isAnotherParticipantTyping, setIsAnotherParticipantTyping] = reactExports.useState(false);
   const [conversationEntries, setConversationEntries] = reactExports.useState([]);
@@ -18485,7 +18485,7 @@ const styles$6 = {
   minimizeButton
 };
 const Header = ({ show }) => {
-  const AGENT_NAME = "Robotic Operating Buddy";
+  const AGENT_NAME = "R.O.B. (Robotic Operating Buddy)";
   if (!show) {
     return null;
   }
