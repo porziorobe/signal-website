@@ -2362,12 +2362,15 @@ function addAppToPage() {
   flex-direction: column;
 }
 
-/* Collapsed: just the search bar pinned to bottom */
+/* Collapsed: search bar centered near bottom */
 .app-collapsed {
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
+  bottom: 24px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 82vw !important;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* Expanded: centered modal */
@@ -2785,7 +2788,7 @@ function addAppToPage() {
 ._minimizeButton_1kdxn_56:hover {
   background: rgba(255, 255, 255, 0.1);
 }
-._searchContainer_mqt41_1 {
+._searchContainer_135h0_1 {
   display: flex;
   width: 100%;
   height: 64px;
@@ -2794,17 +2797,17 @@ function addAppToPage() {
   flex-shrink: 0;
   background: #032D60;
   position: relative;
-  border-radius: 0 0 20px 20px;
+  border-radius: 999px;
 }
 
-._searchForm_mqt41_13 {
+._searchForm_135h0_13 {
   display: flex;
   align-items: center;
   width: 94%;
   height: 42px;
 }
 
-._searchBar_mqt41_20 {
+._searchBar_135h0_20 {
   display: flex;
   background: #FFFFFF;
   height: 42px;
@@ -2815,11 +2818,11 @@ function addAppToPage() {
   transition: box-shadow 0.2s ease;
 }
 
-._searchBar_mqt41_20:focus-within {
+._searchBar_135h0_20:focus-within {
   box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.2);
 }
 
-._searchInput_mqt41_35 {
+._searchInput_135h0_35 {
   flex: 1;
   border: none;
   outline: none;
@@ -2830,19 +2833,19 @@ function addAppToPage() {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-._searchInput_mqt41_35::placeholder {
+._searchInput_135h0_35::placeholder {
   color: #666;
   font-size: 14px;
 }
 
-._searchActions_mqt41_51 {
+._searchActions_135h0_51 {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-right: 6px;
 }
 
-._searchActionButton_mqt41_58 {
+._searchActionButton_135h0_58 {
   background: #0176D3;
   border: none;
   padding: 7px 16px;
@@ -2856,12 +2859,12 @@ function addAppToPage() {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-._searchActionButton_mqt41_58:hover {
+._searchActionButton_135h0_58:hover {
   background: #0161b3;
   box-shadow: 0 2px 6px rgba(1, 118, 211, 0.3);
 }
 
-._searchIcon_mqt41_77 {
+._searchIcon_135h0_77 {
   width: 1.5rem;
   height: 1.5rem;
   aspect-ratio: 1/1;
@@ -2872,14 +2875,14 @@ function addAppToPage() {
   flex-shrink: 0;
 }
 
-._searchIcon_mqt41_77 img {
+._searchIcon_135h0_77 img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   border-radius: 50%;
 }
 
-._expandButton_mqt41_95 {
+._expandButton_135h0_95 {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
@@ -2893,7 +2896,7 @@ function addAppToPage() {
   transition: opacity 0.2s;
 }
 
-._expandButton_mqt41_95:hover {
+._expandButton_135h0_95:hover {
   opacity: 1;
 }
 ._recsTemplate_1jf9y_1 {
@@ -18415,13 +18418,11 @@ const Placeholder = () => {
 const headerContainer = "_headerContainer_1kdxn_1";
 const agentName = "_agentName_1kdxn_11";
 const agentBadge = "_agentBadge_1kdxn_24";
-const endConversationButton = "_endConversationButton_1kdxn_35";
 const minimizeButton = "_minimizeButton_1kdxn_56";
 const styles$6 = {
   headerContainer,
   agentName,
   agentBadge,
-  endConversationButton,
   minimizeButton
 };
 const Header = ({ show }) => {
@@ -18432,7 +18433,6 @@ const Header = ({ show }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: styles$6.headerContainer, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: styles$6.agentName, children: /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: AGENT_NAME }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: styles$6.agentBadge, children: "Powered by Agentforce" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: styles$6.endConversationButton, onClick: window.AdaptiveWebsite.endConversation, children: "End Conversation" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       "button",
       {
@@ -18447,14 +18447,14 @@ const Header = ({ show }) => {
     )
   ] });
 };
-const searchContainer = "_searchContainer_mqt41_1";
-const searchForm = "_searchForm_mqt41_13";
-const searchBar = "_searchBar_mqt41_20";
-const searchInput = "_searchInput_mqt41_35";
-const searchActions = "_searchActions_mqt41_51";
-const searchActionButton = "_searchActionButton_mqt41_58";
-const searchIcon = "_searchIcon_mqt41_77";
-const expandButton = "_expandButton_mqt41_95";
+const searchContainer = "_searchContainer_135h0_1";
+const searchForm = "_searchForm_135h0_13";
+const searchBar = "_searchBar_135h0_20";
+const searchInput = "_searchInput_135h0_35";
+const searchActions = "_searchActions_135h0_51";
+const searchActionButton = "_searchActionButton_135h0_58";
+const searchIcon = "_searchIcon_135h0_77";
+const expandButton = "_expandButton_135h0_95";
 const styles$5 = {
   searchContainer,
   searchForm,

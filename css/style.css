@@ -617,3 +617,8 @@ a { text-decoration: none; color: inherit; }
   .cap-grid { grid-template-columns: 1fr; }
   .awac-placeholder-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* Hide platform embedded messaging button — AWAC SDK provides its own UI */
+#embeddedMessagingConversationButton {
+  display: none !important;
+}
